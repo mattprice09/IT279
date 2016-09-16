@@ -21,9 +21,10 @@ int main ()
 	node *current;
 	int add;
 	
-	
+	//Takes Input From the User
 	cout << "add an item to the linked list" << endl;
 	cin >> add;
+	//Check  Input From the User to See if it is a recognized by the program 
 	if(add == 'c' || 'C') {clear();}
 	else if(add == 'u' || 'U') {undo();}
 	else if(add == 'r' || 'R') {repeat();}
@@ -46,16 +47,19 @@ int main ()
 
 
 }
-
+// This Function will set the current calucated value equal to zero
 int clear() {
 	return 0;
 }
+// This Function will set the current calucated value equal to the one before it
 int undo() {
 	return 0;
 }
+// This Function will disable the Undo and return the value before 
 int repeat() {
 	return 0;
 }
+// This Function will quit the program and return "Goodbye"
 int quit() {
 	cout << "quit";
 	return 0;
