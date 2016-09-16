@@ -21,7 +21,7 @@ int main ()
   stack <int> inactiveStack;
 
   // Set of operators, O(1) lookup time
-  std::string operatorArr[] = {'+', '-', '*', '/', '%'};
+  std::string operatorArr[] = {"+", "-", "*", "/", "%%"};
   std::set<std::string> operators(operatorList, sizeof(operatorArr));
 
   std::string input;
@@ -32,16 +32,16 @@ int main ()
   node *current;
 
   // Accept user input until they quit
-  while (input != 'q') {
+  while (input != "q") {
     node *root;
     
-    if (input == 'c') {
+    if (input == "c") {
       clear();
     }
-    else if (input == 'u') {
+    else if (input == "u") {
       undo();
     }
-    else if (input == 'r') {
+    else if (input == "r") {
       redo();
     }
     else {
@@ -62,7 +62,7 @@ int main ()
 
       int newValue = calculate(current->x, operatorStr, intOperand);
 
-      // Push new node, assign current node's "next" to the new node. 
+      // Push new node, assign current node"s "next" to the new node. 
       root = new node;
       root->x = newValue;
       current->next = root;
@@ -75,7 +75,7 @@ int main ()
     cout << "input an item to the linked list" << endl;
     cin >> input;
   }
-  cout << 'Goodbye!' << endl;
+  cout << "Goodbye!" << endl;
 }
 
 // @timfield
