@@ -78,12 +78,15 @@ int main ()
 	cout << 'Goodbye!' << endl;
 }
 
+// This Function will set the current calucated value equal to zero
 int clear() {
 	return 0;
 }
+// This Function will set the current calucated value equal to the one before it
 int undo() {
 	return 0;
 }
+// This Function will disable the Undo and return the value before 
 int redo() {
 	return 0;
 }
