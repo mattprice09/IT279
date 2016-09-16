@@ -78,19 +78,25 @@ int main ()
   cout << 'Goodbye!' << endl;
 }
 
+// @timfield
 // This Function will set the current calucated value equal to zero
 int clear() {
   return 0;
 }
+
+// @timfield
 // This Function will set the current calucated value equal to the one before it
 int undo() {
   return 0;
 }
+
+// @nickmessina
 // This Function will disable the Undo and return the value before 
 int redo() {
   return 0;
 }
 
+// @mattprice
 int calculate(int curr, int oper, int operand) {
   return 0;
 }
