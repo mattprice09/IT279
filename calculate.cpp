@@ -1,35 +1,37 @@
-#include <iostream>
-#include <stack>
+#include <algorithm>
+#include <set>
 
-using namespace std;
-
-struct node {
-  int x;
-  node *next;
-};
+#include "LLStack.h"
 
 int clear();
 int undo();
 int redo();
-int calculate(int curr, int oper, int operand);
-int parseNumber(std::string input);
+int calculate(int curr, string oper, int operand);
+int parseNumber(string input);
 
-int main ()
-{
+int main () {
 
-  stack <int> activeStack;
-  stack <int> inactiveStack;
+  int DEBUG = 1;
+
+  LLStack *activeStack = new LLStack;
+  LLStack *inactiveStack = new LLStack;
 
   // Set of operators, O(1) lookup time
-  std::string operatorArr[] = {"+", "-", "*", "/", "%%"};
-  std::set<std::string> operators(operatorList, sizeof(operatorArr));
+  string arr[] = {"+", "-", "*", "/", "%"};
+  std::set<string> operators(arr, arr + sizeof(arr) / sizeof(arr[0]));
 
-  std::string input;
+  string input;
   std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 
   cout << "input an item to the linked list" << endl;
   cin >> input;
-  node *current;
+
+  // Insert the root node (value of 0)
+  node *current = new node;
+  current->type = '_';
+  current->x = 0;
+  current->next = NULL;
+  activeStack->push(current);
 
   // Accept user input until they quit
   while (input != "q") {
@@ -45,7 +47,7 @@ int main ()
       redo();
     }
     else {
-      std::string operatorStr = input.substr(0);
+      string operatorStr = input.substr(0,1);
 
       // Validate operator, O(1)
       if (operators.find(operatorStr) == operators.end()) {
@@ -54,23 +56,33 @@ int main ()
       }
 
       // Validate integer operand
-      int intOperand = parseNumber(input.subtr(1))
+      int intOperand = parseNumber(input.substr(1));
       if (! intOperand) {
         cout << "Invalid input. Please try again." << endl;
         cin >> input;
       }
 
+      if (DEBUG == 2) {
+        cout << "Operator:" << endl;
+        cout << operatorStr << endl;
+        cout << "Operand" << endl;
+        cout << intOperand << endl;
+      }
+
       int newValue = calculate(current->x, operatorStr, intOperand);
 
-      // Push new node, assign current node"s "next" to the new node. 
+      // Push new node, keep track of its value. 
       root = new node;
       root->x = newValue;
-      current->next = root;
-      activeStack.push(root); 
+      root->type = operatorStr;
+      root->next = current;
       current = root;
+      activeStack->push(root); 
     }
 
-    cout << activeStack.size() << endl;
+    if (DEBUG == 1) {
+      activeStack->printStack();
+    }
 
     cout << "input an item to the linked list" << endl;
     cin >> input;
@@ -96,16 +108,26 @@ int redo() {
   return 0;
 }
 
-// @mattprice
-int calculate(int curr, int oper, int operand) {
-  return 0;
+// Run basic arithmetic calculation
+int calculate(int curr, string oper, int operand) {
+  if (oper == "+") {
+    return curr + operand;
+  } else if (oper == "-") {
+    return curr - operand;
+  } else if (oper == "*") {
+    return curr * operand;
+  } else if (oper == "/") {
+    return curr / operand;
+  } else {
+    return curr % operand;
+  }
 }
 
-bool parseNumber(std::string str) {
+// Parse out a number from text
+int parseNumber(string str) {
+  int parsedOperand;
   try {
-    int parsedOperand = atoi(str.c_str());
-  } catch (...) {
-    return;
-  }
+    parsedOperand = atoi(str.c_str());
+  } catch (...) {}
   return parsedOperand;
 }
