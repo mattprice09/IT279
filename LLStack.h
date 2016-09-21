@@ -9,7 +9,6 @@ using namespace std;
 
 struct node {
   int x;
-  string type;
   struct node *next;
 };
 

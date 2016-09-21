@@ -11,7 +11,7 @@ int parseNumber(string input);
 
 int main () {
 
-  int DEBUG = 1;
+  int DEBUG = 0;
 
   LLStack *activeStack = new LLStack;
   LLStack *inactiveStack = new LLStack;
@@ -21,14 +21,13 @@ int main () {
   std::set<string> operators(arr, arr + sizeof(arr) / sizeof(arr[0]));
 
   string input;
-  std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+  cout << "> ";
 
-  cout << "input an item to the linked list" << endl;
   cin >> input;
+  std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 
   // Insert the root node (value of 0)
   node *current = new node;
-  current->type = '_';
   current->x = 0;
   current->next = NULL;
   activeStack->push(current);
@@ -74,7 +73,6 @@ int main () {
       // Push new node, keep track of its value. 
       root = new node;
       root->x = newValue;
-      root->type = operatorStr;
       root->next = current;
       current = root;
       activeStack->push(root); 
@@ -84,8 +82,10 @@ int main () {
       activeStack->printStack();
     }
 
-    cout << "input an item to the linked list" << endl;
+    cout << current->x << endl;
+    cout << "> ";
     cin >> input;
+    std::transform(input.begin(), input.end(), input.begin(), ::tolower);
   }
   cout << "Goodbye!" << endl;
 }
