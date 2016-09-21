@@ -6,12 +6,12 @@ build: output
 
 output: supermarket.o LLQueue.o
 	${CC} supermarket.o LLQueue.o ${OFLAG} output
+	
+LLQueue.o: LLQueue.cpp LLQueue.h
+	${CC} ${CFLAGS} LLQueue.cpp
 
 supermarket.o: supermarket.cpp
 	${CC} ${CFLAGS} supermarket.cpp
-
-LLQueue.o: LLQueue.cpp LLQueue.h
-	${CC} ${CFLAGS} LLQueue.cpp
 
 clean: 
 	- rm -rf *.o

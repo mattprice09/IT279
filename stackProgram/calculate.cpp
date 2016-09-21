@@ -13,8 +13,8 @@ int main() {
 
   int DEBUG = 0;
 
-  LLStack *activeStack = new LLStack;
-  LLStack *inactiveStack = new LLStack;
+  LLStack<int> *activeStack = new LLStack<int>;
+  LLStack<int> *inactiveStack = new LLStack<int>;
 
   // Set of operators, O(1) lookup time
   string arr[] = {"+", "-", "*", "/", "%"};
@@ -27,14 +27,12 @@ int main() {
   std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 
   // Insert the root node (value of 0)
-  node *current = new node;
-  current->x = 0;
-  current->next = NULL;
+  int current = 0;
   activeStack->push(current);
 
   // Accept user input until they quit
   while (input != "q") {
-    node *root;
+    node<int> *root;
     
     if (input == "c") {
       clear();
@@ -68,21 +66,17 @@ int main() {
         cout << intOperand << endl;
       }
 
-      int newValue = calculate(current->x, operatorStr, intOperand);
+      current = calculate(current, operatorStr, intOperand);
 
       // Push new node, keep track of its value. 
-      root = new node;
-      root->x = newValue;
-      root->next = current;
-      current = root;
-      activeStack->push(root); 
+      activeStack->push(current); 
     }
 
     if (DEBUG == 1) {
       activeStack->printStack();
     }
 
-    cout << current->x << endl;
+    cout << current << endl;
     cout << "> ";
     cin >> input;
     std::transform(input.begin(), input.end(), input.begin(), ::tolower);
