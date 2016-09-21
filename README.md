@@ -1,9 +1,7 @@
 # IT279
 Various IT279 projects
 
-## Stack Program
-To run the program, execute the following script:
+## Running the program(s)
+To run either of the programs, navigate to their respective folder and execute the following command:
 
 `. ./build_run.sh`
-
-## Queue Program

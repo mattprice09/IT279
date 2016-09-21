@@ -9,7 +9,7 @@ int redo();
 int calculate(int curr, string oper, int operand);
 int parseNumber(string input);
 
-int main () {
+int main() {
 
   int DEBUG = 0;
 
