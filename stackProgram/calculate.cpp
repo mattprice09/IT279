@@ -1,7 +1,14 @@
 #include <algorithm>
 #include <set>
 
+#include <cstdlib>
+#include <string>
+#include <stack>
+#include <iostream>
+
 #include "LLStack.h"
+using namespace std;
+
 
 int clear();
 int undo();
@@ -13,8 +20,8 @@ int main() {
 
   int DEBUG = 0;
 
-  LLStack<int> *activeStack = new LLStack<int>;
-  LLStack<int> *inactiveStack = new LLStack<int>;
+	LLStack<int> *activeStack = new LLStack<int>;
+	LLStack<int> *inactiveStack = new LLStack<int>;
 
   // Set of operators, O(1) lookup time
   string arr[] = {"+", "-", "*", "/", "%"};
@@ -24,6 +31,7 @@ int main() {
   cout << "> ";
 
   cin >> input;
+
   std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 
   // Insert the root node (value of 0)
@@ -33,12 +41,22 @@ int main() {
   // Accept user input until they quit
   while (input != "q") {
     node<int> *root;
-    
+
     if (input == "c") {
-      clear();
+
+		inactiveStack->push(current);
+		current = 0;
+		activeStack->push(current);
+
+		clear();
+
+
     }
     else if (input == "u") {
-      undo();
+    	current  = inactiveStack->pop();
+    	//I need the peek to work before i finish this -Tim
+
+//    	undo();
     }
     else if (input == "r") {
       redo();
@@ -69,7 +87,10 @@ int main() {
       current = calculate(current, operatorStr, intOperand);
 
       // Push new node, keep track of its value. 
+
       activeStack->push(current); 
+
+      inactiveStack->push(current);
     }
 
     if (DEBUG == 1) {
@@ -77,6 +98,7 @@ int main() {
     }
 
     cout << current << endl;
+
     cout << "> ";
     cin >> input;
     std::transform(input.begin(), input.end(), input.begin(), ::tolower);
@@ -87,12 +109,14 @@ int main() {
 // @timfield
 // This Function will set the current calucated value equal to zero
 int clear() {
-  return 0;
+
+	return 0;
 }
 
 // @timfield
 // This Function will set the current calucated value equal to the one before it
 int undo() {
+//I need the peek to work before i finish this -Tim
   return 0;
 }
 

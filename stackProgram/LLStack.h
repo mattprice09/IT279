@@ -26,6 +26,7 @@ public:
 
   void push(T val);
   T pop();
+  T peek();
   void printStack();
 };
 
@@ -70,6 +71,15 @@ T LLStack<T>::pop() {
   size --;
   return val;
 }
+
+template <class T>
+T LLStack<T>::peek() {
+//    if (!empty()) {
+//        throw std::out_of_range("underflow");
+//    }
+    return top->data;
+}
+
 
 // Helper for debugging - prints the stack
 template <class T>
