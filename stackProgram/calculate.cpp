@@ -43,24 +43,21 @@ int main() {
     node<int> *root;
 
     if (input == "c") {
-    current = 0;
-  activeStack->push(current);
+      current = 0;
+      activeStack->push(current);
     }
     else if (input == "u") {
-      inactiveStack->push(activeStack->pop());
+      int prev = activeStack->pop();
+      inactiveStack->push(prev);
       current = activeStack->peek();
-
     }
     else if (input == "r") {
-      if (inactiveStack->size == 0)
-            {
-              cout << "No operations to redo" << endl;
-
-            }
-      else
-      {
-      current  = inactiveStack->pop();
-      activeStack->push(current);
+      if (inactiveStack->size == 0) {
+        cout << "No operations to redo" << endl;
+      }
+      else {
+        current = inactiveStack->pop();
+        activeStack->push(current);
       }
     }
     else {
@@ -92,9 +89,10 @@ int main() {
       activeStack->push(current); 
       
       // Clear out inactive stack
-      while (*inactiveStack->top) {
-        delete *inactiveStack->top;
+      while (*inactiveStack->top != NULL) {
+        inactiveStack->pop();
       }
+      inactiveStack->size = 0;
     }
 
     if (DEBUG == 1) {
