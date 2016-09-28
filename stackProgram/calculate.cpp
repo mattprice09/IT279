@@ -43,23 +43,25 @@ int main() {
     node<int> *root;
 
     if (input == "c") {
-
-		inactiveStack->push(current);
-		current = 0;
-		activeStack->push(current);
-
-		clear();
-
-
+    current = 0;
+  activeStack->push(current);
     }
     else if (input == "u") {
-    	current  = inactiveStack->pop();
-    	//I need the peek to work before i finish this -Tim
+      inactiveStack->push(activeStack->pop());
+      current = activeStack->peek();
 
-//    	undo();
     }
     else if (input == "r") {
-      redo();
+      if (inactiveStack->size == 0)
+            {
+              cout << "No operations to redo" << endl;
+
+            }
+      else
+      {
+      current  = inactiveStack->pop();
+      activeStack->push(current);
+      }
     }
     else {
       string operatorStr = input.substr(0,1);
