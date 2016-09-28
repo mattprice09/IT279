@@ -58,15 +58,14 @@ void LLStack<T>::push(T val) {
 // Pop/return value from top of stack
 template <class T>
 T LLStack<T>::pop() {
-  if (! top) {
-    return NULL;
-  }
 
   T val = top->data;
   if (top->next == NULL) {
-    top = NULL;
+    delete top;
   } else {
-    top = top->next;
+    node<T> *tmp = top->next;
+    delete top;
+    top = tmp;
   }
   size --;
   return val;

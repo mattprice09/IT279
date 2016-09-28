@@ -89,7 +89,7 @@ int main() {
       activeStack->push(current); 
       
       // Clear out inactive stack
-      while (*inactiveStack->top != NULL) {
+      while (inactiveStack->size > 0) {
         inactiveStack->pop();
       }
       inactiveStack->size = 0;
