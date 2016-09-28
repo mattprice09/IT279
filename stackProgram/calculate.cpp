@@ -92,10 +92,8 @@ int main() {
       activeStack->push(current); 
       
       // Clear out inactive stack
-      while (*inactiveStack) {
-        curr = (*inactiveStack)->next;
-        delete *inactiveStack;
-        *inactiveStack = curr;
+      while (*inactiveStack->top) {
+        delete *inactiveStack->top;
       }
     }
 
@@ -110,26 +108,6 @@ int main() {
     std::transform(input.begin(), input.end(), input.begin(), ::tolower);
   }
   cout << "Goodbye!" << endl;
-}
-
-// @timfield
-// This Function will set the current calucated value equal to zero
-int clear() {
-
-	return 0;
-}
-
-// @timfield
-// This Function will set the current calucated value equal to the one before it
-int undo() {
-//I need the peek to work before i finish this -Tim
-  return 0;
-}
-
-// @nickmessina
-// This Function will disable the Undo and return the value before 
-int redo() {
-  return 0;
 }
 
 // Run basic arithmetic calculation
