@@ -87,10 +87,14 @@ int main() {
       current = calculate(current, operatorStr, intOperand);
 
       // Push new node, keep track of its value. 
-
       activeStack->push(current); 
-
-      inactiveStack->push(current);
+      
+      // Clear out inactive stack
+      while (*inactiveStack) {
+        curr = (*inactiveStack)->next;
+        delete *inactiveStack;
+        *inactiveStack = curr;
+      }
     }
 
     if (DEBUG == 1) {
