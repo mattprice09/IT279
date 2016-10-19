@@ -4,7 +4,7 @@
  * Sorts numbers read from a file using insertion sort and a linked list
  *
  *  Created on: Oct 13, 2016
- *      Author: Michael Donner
+ *      Authors: Michael Donner, Matt Price, John Reape
  */
 
 #include "stdlib.h"
@@ -26,6 +26,7 @@ InsertionSort::InsertionSort() {
 	size = 0;
 	unsorted = sorted = NULL;
 }
+
 void InsertionSort::printList() {
 	Node* current = sorted;
 	while (current != NULL) {
@@ -46,7 +47,7 @@ void InsertionSort::readFile(const char* filename) {
 	std::ifstream inputFile(filename);
 	std::string line;
 	int data;
-	// need to add data to tail to follow prompt
+	// need to add data to tail to match order of input file
 	Node* tail;
 
 	if (inputFile.is_open()) {
@@ -70,7 +71,9 @@ void InsertionSort::outputFile(const char* filename) {
 	if (outputFile.is_open()) {
 		Node *current = sorted;
 		while (current != NULL) {
-			outputFile << current->data << std::endl;
+			// use '\n' instead of endl to match Unix `sort` terminal output
+			// and make diff easier to compare
+			outputFile << current->data << '\n';
 			current = current->next;
 		}
 		outputFile.close();
@@ -85,18 +88,18 @@ void InsertionSort::sort() {
 	std::cout << "Sorting" << std::endl;
 	Node *current = unsorted;
 	Node *next;
+	// Let's make a progress bar so we can know something is actually happening
 	float progress = 0.0;
-
 	std::cout << std::setprecision(3) << std::fixed;
 	while(current != NULL) {
 		std::cout << (progress / size * 100.0) << "%" << '\r';
 		progress++;
-//		printList();
 		unsorted = current->next;
 		insert(current);
 		current = unsorted;
 	}
 }
+
 void InsertionSort::insert(Node* current) {
 	int data = current->data;
 	// Special case if the list is empty or if data is smaller than sorted->data.
@@ -123,6 +126,5 @@ int main(int argc, char* argv[]) {
 	InsertionSort sort;
 	sort.readFile(argv[1]);
 	sort.sort();
-//	sort.printList();
 	sort.outputFile("out.txt");
 }
