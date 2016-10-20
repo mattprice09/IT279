@@ -6,5 +6,8 @@ debug: InsertionSort.cpp InsertionSort.h
 InsertionSort: InsertionSort.cpp InsertionSort.h
 	g++ -o InsertionSort InsertionSort.cpp
 
+ShellSort: ShellSort.cpp ShellSort.h
+	g++ -o ShellSort ShellSort.cpp
+
 clean:
 	rm *.exe
