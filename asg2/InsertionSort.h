@@ -18,10 +18,6 @@ public:
 	 */
 	InsertionSort();
 	~InsertionSort();
-	/*	Print the current state of the sorted and unsorted protions 
-	 *	of internal lists. Used for debugging only small inputs
-	 */
-	void printList();
 	/*	Make a new unsorted linked list from input file */
 	void readFile(const char* filename);
 	/* 	Output sorted list to file. Outputs empty file if not yet sorted */

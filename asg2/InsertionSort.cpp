@@ -43,23 +43,7 @@ InsertionSort::~InsertionSort() {
 	}
 }
 
-void InsertionSort::printList() {
-	Node* current = sorted;
-	while (current != NULL) {
-		std::cout << current->data << " ";
-		current = current->next;
-	}
-	std::cout << "| ";
-	current = unsorted;
-	while (current != NULL) {
-		std::cout << current->data << " ";
-		current = current->next;
-	}
-	std::cout << std::endl;
-}
-
 void InsertionSort::readFile(const char* filename) {
-	std::cout << "Opening: " << filename << std::endl;
 	std::ifstream inputFile(filename);
 	std::string line;
 	int data;
@@ -93,7 +77,6 @@ void InsertionSort::outputFile(const char* filename) {
 			current = current->next;
 		}
 		outputFile.close();
-		std::cout << "Output saved to: " << filename << std::endl;
 	} else {
 		std::cerr << "Unable to open output file" << std::endl;
 		exit (EXIT_FAILURE);
@@ -101,15 +84,9 @@ void InsertionSort::outputFile(const char* filename) {
 }
 
 void InsertionSort::sort() {
-	std::cout << "Sorting" << std::endl;
 	Node *current = unsorted;
 	Node *next;
-	// Let's make a progress bar so we can know something is actually happening
-	float progress = 0.0;
-	std::cout << std::setprecision(3) << std::fixed;
 	while(current != NULL) {
-		std::cout << (progress / size * 100.0) << "%" << '\r';
-		progress++;
 		unsorted = current->next;
 		insert(current);
 		current = unsorted;
