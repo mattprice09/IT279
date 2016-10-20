@@ -118,13 +118,14 @@ void InsertionSort::insert(Node* current) {
 }
 
 int main(int argc, char* argv[]) {
-	if(argc < 2) {
-		std::cerr << "Usage: " << argv[0] << " FILE_TO_SORT" << std::endl;
+	if(argc < 3) {
+		std::cerr << "Usage: " << argv[0] << " INPUT_FILE OUTPUT_FILE"
+			<< std::endl;
 		return 1;
 	}
 
 	InsertionSort sort;
 	sort.readFile(argv[1]);
 	sort.sort();
-	sort.outputFile("out.txt");
+	sort.outputFile(argv[2]);
 }
