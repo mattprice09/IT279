@@ -1,3 +1,10 @@
 workspace.cpp
 output
 *.o
+*.exe
+*~
+*.xml
+.project
+.cproject
+.stackdump
+/Debug/
