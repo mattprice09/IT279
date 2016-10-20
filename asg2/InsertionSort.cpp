@@ -27,6 +27,22 @@ InsertionSort::InsertionSort() {
 	unsorted = sorted = NULL;
 }
 
+InsertionSort::~InsertionSort() {
+	Node* current;
+	// Delete all Nodes that were created durring readFile()
+	// independent of if sort() was run or not.
+	while (sorted != NULL) {
+		current = sorted;
+		sorted = sorted->next;
+		delete current;
+	}
+	while (unsorted != NULL) {
+		current = unsorted;
+		unsorted = unsorted->next;
+		delete current;
+	}
+}
+
 void InsertionSort::printList() {
 	Node* current = sorted;
 	while (current != NULL) {
