@@ -1,4 +1,8 @@
-all: InsertionSort
+all: InsertionSort ShellSort
+
+insertion: InsertionSort
+
+shell: ShellSort
 
 debug: InsertionSort.cpp InsertionSort.h
 	g++ -g -o InsertionSort InsertionSort.cpp
