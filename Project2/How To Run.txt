@@ -1,2 +1,0 @@
-make
-./BottomUpMergesort input.txt output.txt
