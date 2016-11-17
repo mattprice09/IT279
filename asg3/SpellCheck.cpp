@@ -1,16 +1,36 @@
-
 #include "Dictionary.h"
-#include <iostream>
+
 using namespace std;
-#include <string>
+
 #include <cstdlib>
 #include <fstream>
-#include <vector>
+#include <iostream>
 #include <set>
+#include <string>
+#include <vector>
+
 
 // Read the input file, return Dictionary
-Dictionary readDict(string inputFile) {
+Dictionary readDict() {
+  Dictionary dict;
+  string dictTemp = "";
+  ifstream data ("dict.txt");
+  if (data.is_open()) {
+    while (getline(data,dictTemp)) { 
+      int i =0;
+      char c;
+      while(dictTemp[i]) {
+        c=dictTemp[i];
+        dictTemp.c_str();
+        c = (tolower(c));
+        i++;
+      }
+      dict.AddEntry(dictTemp);
+    }
+    data.close();
+  }
 
+  return dict;
 }
 
 // Add all permutations of the word possible by adding any letter in any position
@@ -47,7 +67,7 @@ void getWordsByExchanging(set<string>& mainList, string word) {
 }
 
 // Get all word options to search for
-vector<string> getAllWords(string word) {
+vector<string> getWordOptions(string word) {
 
   // Initially store as set to avoid duplicates
   set<string> wordSet;
@@ -66,66 +86,90 @@ vector<string> getAllWords(string word) {
 }
 
 // The main function that checks if the word is valid
-// Returned vector will be empty if the word was valid. Otherwise, it contains
-// all possible alternative words
-vector<string> getWordAlts(Dictionary wordDict, vector<string> wordList) {
+vector<string> getWordAlts(Dictionary& wordDict, vector<string>& wordList) {
 
-}
+  vector<string> matches;
 
-int main(int argc, char* argv[]){
-
-  // string word = "testword";
-  // vector<string> wordsToFind = getAllWords(word);
-
-  // Require the input file as a CLI argument
-  if(argc < 2) {
-    cerr << "Usage: " << argv[0] << " INPUT_FILE"
-      << endl;
-    return 1;
+  for (int i = 0; i < wordList.size(); i++) {
+    if (wordDict.FindEntry(wordList[i])) {
+      matches.push_back(wordList[i]);
+    }
   }
 
-  int lineCount = 0;
-  string dictTemp = "";
-  string checkTemp = "";
-  string checkFile = "";
-  Dictionary dict;
-  ifstream data ("dict.txt");
-    if (data.is_open()) {
-      while (getline(data,dictTemp) ){ 
-        int i =0;
-        char c;
-        while(dictTemp[i]) {
-          c=dictTemp[i];
-          dictTemp.c_str();
-          c = (tolower(c));
-          i++;
-        }
-        dict.AddEntry(dictTemp);
-        cout << dictTemp << endl;
-      }
-          data.close();
-      }
-    
-  cout << "Please enter the name of a text file to check" << endl;
-  cin >> checkFile;
-  ifstream infile(checkFile);
+  return matches;
+}
+
+void spellCheck(string checkFile, Dictionary& dict) {
+
+  // Handle exceptions from opening file
+  ifstream infile(checkFile.c_str());
   if(!infile.is_open()) {
     cerr << "Unable to open file" <<endl;
     exit(EXIT_FAILURE);
   }
+
+  cout << endl << "Spellchecking..." << endl << endl;
+
+  // Read input file word by word
+  int numMisspelled = 0;
+  int lineCount = 0;
+  string checkTemp = "";
   while(!infile.eof()) {
+
+    // Parse in the entire word
     checkTemp = "";
     char c;
     infile.get(c);
     c = tolower(c);
-    while(isalpha(c)) {
+    while(isalpha(c) && !infile.eof()) {
       checkTemp += c;
       infile.get(c);
       c = tolower(c);
-      if(c == '\n') {
-        lineCount++;
+    }
+    // TODO: Currently doesn't handle punctuation
+
+    // Spellcheck word
+    if (!dict.FindEntry(checkTemp)) {
+      // word doesn't exist. find alternatives
+      numMisspelled ++;
+      vector<string> wordVariations = getWordOptions(checkTemp);
+      vector<string> similarWords = getWordAlts(dict, wordVariations);
+
+      cout << "> Spelling Error - line " << lineCount << endl;
+      cout << "Misspelled word: " + checkTemp << endl;
+      cout << "Did you mean to enter one of the following: ";
+      for (int i = 0; i < similarWords.size(); i++) {
+        cout << similarWords[i];
+        if (i == similarWords.size() - 1) {
+          cout << endl << endl;
+        } else {
+          cout << ", ";
+        }
       }
     }
-    cout << "line: " << lineCount << " word: " << checkTemp << endl;
+
+    if (c == '\n') {
+      // newline
+      lineCount ++;
+    }
   }
+
+  if (!numMisspelled) {
+    cout << "Success! There were no misspellings." << endl;
+  } else {
+    cout << "Found " << numMisspelled << " misspelled words. Please see details above." << endl;
+  }
+}
+
+int main(int argc, char* argv[]){
+
+  Dictionary dict = readDict();
+
+  cout << "Please enter the name of a text file to check" << endl;
+  cout << "> ";
+  string checkFile = "";
+  cin >> checkFile;
+
+  spellCheck(checkFile, dict);
+  
 }
