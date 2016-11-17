@@ -28,8 +28,6 @@ HashDict& HashDict::operator=(const HashDict& orig)
   return *this;
 }
 
-
-
 void HashDict::AddEntry(string anEntry)
 {
   // create the node

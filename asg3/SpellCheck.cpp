@@ -1,4 +1,5 @@
 #include "AVLDict.h"
+#include "HashDict.h"
 
 using namespace std;
 
@@ -127,6 +128,10 @@ void spellCheck(string checkFile, AVLDict& dict) {
       c = tolower(c);
     }
     // TODO: Currently doesn't handle punctuation
+
+    if (checkTemp.size() == 0) {
+      continue;
+    }
 
     // Spellcheck word
     if (!dict.FindEntry(checkTemp)) {
