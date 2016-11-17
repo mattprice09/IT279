@@ -16,21 +16,24 @@ Dictionary readDict() {
   Dictionary dict;
   string dictTemp = "";
   ifstream data ("dict.txt");
+  set<string> uniques;
   if (data.is_open()) {
-    while (getline(data,dictTemp)) { 
+    while (getline(data,dictTemp)) {
       int i =0;
-      char c;
       while (dictTemp[i]) {
-        c=dictTemp[i];
-        dictTemp.c_str();
-        c = (tolower(c));
+        dictTemp[i] = (tolower(dictTemp[i]));
         i++;
       }
-      dict.AddEntry(dictTemp);
+
+      // Handle duplicates from dictionary file
+      if (uniques.find(dictTemp) == uniques.end()) {
+        dict.AddEntry(dictTemp);
+        uniques.insert(dictTemp);
+      }
     }
     data.close();
   }
-
+  dict.PrintSorted(cout);
   return dict;
 }
 
