@@ -1,7 +1,7 @@
 // file to implement a binary search tree of Entry objects
 
-#ifndef DICTIONARY_H
-#define DICTIONARY_H
+#ifndef AVLDICTIONARY_H
+#define AVLDICTIONARY_H
 
 #include <iostream>
 #include <string>
@@ -16,7 +16,7 @@ struct AVLTreeNode
   AVLTreeNode* right;
 };
 
-class Dictionary
+class AVLDictionary
 {
  private:
   AVLTreeNode* root;
@@ -24,16 +24,16 @@ class Dictionary
 
  public:
 
-  Dictionary();
+  AVLDictionary();
   // Creates an empty dictionary;
 
-  Dictionary(const Dictionary& orig);
+  AVLDictionary(const AVLDictionary& orig);
   // Copy constructor
 
-  virtual ~Dictionary();
+  virtual ~AVLDictionary();
   // Destructor
 
-  Dictionary& operator=(const Dictionary& orig);
+  AVLDictionary& operator=(const AVLDictionary& orig);
   // assignment operator
 
   void AddEntry(string anEntry);
@@ -49,11 +49,11 @@ class Dictionary
 
  private:
 
-  void copyDict(const Dictionary& orig);
+  void copyDict(const AVLDictionary& orig);
   // copies the contents of orig to this dictionary
 
   void deleteDict();
-  // properly frees all memory occupied by this Dictionary
+  // properly frees all memory occupied by this AVLDictionary
 
 };
 

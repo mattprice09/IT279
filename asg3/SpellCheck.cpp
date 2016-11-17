@@ -152,7 +152,6 @@ void spellCheck(string checkFile, Dictionary& dict) {
         // no potential matches
         cout << "There were no potential word matches." << endl << endl;;
       }
-      
     }
 
     if (c == '\n') {
