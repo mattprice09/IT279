@@ -162,7 +162,7 @@ void spellCheck(string checkFile, Dictionary& dict) {
   }
 
   if (!numMisspelled) {
-    cout << "Success! There were no spelling errors.." << endl;
+    cout << "Success! There were no spelling errors." << endl;
   } else {
     cout << "Found " << numMisspelled << " misspelled words. Please see details above." << endl;
   }
