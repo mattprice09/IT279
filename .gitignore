@@ -9,3 +9,4 @@ output
 .stackdump
 /Debug/
 data.txt
+test.py
