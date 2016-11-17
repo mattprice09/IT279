@@ -1,4 +1,4 @@
-#include "AVLDict.h"
+#include "Dictionary.h"
 #include "HashDict.h"
 
 using namespace std;
@@ -11,16 +11,16 @@ using namespace std;
 #include <vector>
 
 
-// Read the input file, return AVLDict
-AVLDict readDict() {
-  AVLDict dict;
+// Read the input file, return Dictionary
+Dictionary readDict() {
+  Dictionary dict;
   string dictTemp = "";
   ifstream data ("dict.txt");
   if (data.is_open()) {
     while (getline(data,dictTemp)) { 
       int i =0;
       char c;
-      while(dictTemp[i]) {
+      while (dictTemp[i]) {
         c=dictTemp[i];
         dictTemp.c_str();
         c = (tolower(c));
@@ -87,7 +87,7 @@ vector<string> getWordOptions(string word) {
 }
 
 // The main function that checks if the word is valid
-vector<string> getWordAlts(AVLDict& wordDict, vector<string>& wordList) {
+vector<string> getWordAlts(Dictionary& wordDict, vector<string>& wordList) {
 
   vector<string> matches;
 
@@ -100,7 +100,7 @@ vector<string> getWordAlts(AVLDict& wordDict, vector<string>& wordList) {
   return matches;
 }
 
-void spellCheck(string checkFile, AVLDict& dict) {
+void spellCheck(string checkFile, Dictionary& dict) {
 
   // Handle exceptions from opening file
   ifstream infile(checkFile.c_str());
@@ -113,7 +113,7 @@ void spellCheck(string checkFile, AVLDict& dict) {
 
   // Read input file word by word
   int numMisspelled = 0;
-  int lineCount = 0;
+  int lineCount = 1;
   string checkTemp = "";
   while(!infile.eof()) {
 
@@ -127,7 +127,6 @@ void spellCheck(string checkFile, AVLDict& dict) {
       infile.get(c);
       c = tolower(c);
     }
-    // TODO: Currently doesn't handle punctuation
 
     if (checkTemp.size() == 0) {
       continue;
@@ -174,7 +173,7 @@ void spellCheck(string checkFile, AVLDict& dict) {
 
 int main(int argc, char* argv[]){
 
-  AVLDict dict = readDict();
+  Dictionary dict = readDict();
 
   cout << "Please enter the name of a text file to check" << endl;
   cout << "> ";

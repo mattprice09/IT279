@@ -3,16 +3,11 @@
 #ifndef HASHDICT_H
 #define HASHDICT_H
 
-#include <iostream>
-#include <string>
+#include "Dictionary.h"
 
-using namespace std;
-
-
-class HashDict
-{
+class HashDict: Dictionary {
  private:
-  string[] table;
+  string* table;
   int size;
 
  public:
@@ -46,7 +41,7 @@ class HashDict
   // copies the contents of orig to this dictionary
 
   void deleteDict();
-  // properly frees all memory occupied by this HashDict
+  // properly frees all memory occupied by this Dictionary
 
 };
 

@@ -1,10 +1,13 @@
 CC=g++
 
-all: AVLDict.o HashDict.o SpellCheck.o
-	${CC} AVLDict.o HashDict.o SpellCheck.o -o asg3
+all: Dictionary.o HashDict.o SpellCheck.o
+	${CC} Dictionary.o HashDict.o SpellCheck.o -o asg3
 
-AVLDict.o: AVLDict.cpp AVLDict.h
-	${CC} -c AVLDict.cpp
+avl: Dictionary.o SpellCheck.o
+	${CC} Dictionary.o SpellCheck.o -o asg3
+
+Dictionary.o: Dictionary.cpp Dictionary.h
+	${CC} -c Dictionary.cpp
 
 HashDict.o: HashDict.cpp HashDict.h
 	${CC} -c HashDict.cpp
