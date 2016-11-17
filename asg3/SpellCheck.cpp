@@ -137,15 +137,22 @@ void spellCheck(string checkFile, Dictionary& dict) {
 
       cout << "> Spelling Error - line " << lineCount << endl;
       cout << "Misspelled word: " + checkTemp << endl;
-      cout << "Did you mean to enter one of the following: ";
-      for (int i = 0; i < similarWords.size(); i++) {
-        cout << similarWords[i];
-        if (i == similarWords.size() - 1) {
-          cout << endl << endl;
-        } else {
-          cout << ", ";
+      if (similarWords.size() > 0) {
+        // print all potential word matches
+        cout << "Did you mean to enter one of the following: ";
+        for (int i = 0; i < similarWords.size(); i++) {
+          cout << similarWords[i];
+          if (i == similarWords.size() - 1) {
+            cout << endl << endl;
+          } else {
+            cout << ", ";
+          }
         }
+      } else {
+        // no potential matches
+        cout << "There were no potential word matches." << endl << endl;;
       }
+      
     }
 
     if (c == '\n') {
