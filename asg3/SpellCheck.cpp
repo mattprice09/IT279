@@ -1,4 +1,4 @@
-#include "Dictionary.h"
+#include "AVLDict.h"
 
 using namespace std;
 
@@ -10,9 +10,9 @@ using namespace std;
 #include <vector>
 
 
-// Read the input file, return Dictionary
-Dictionary readDict() {
-  Dictionary dict;
+// Read the input file, return AVLDict
+AVLDict readDict() {
+  AVLDict dict;
   string dictTemp = "";
   ifstream data ("dict.txt");
   if (data.is_open()) {
@@ -86,7 +86,7 @@ vector<string> getWordOptions(string word) {
 }
 
 // The main function that checks if the word is valid
-vector<string> getWordAlts(Dictionary& wordDict, vector<string>& wordList) {
+vector<string> getWordAlts(AVLDict& wordDict, vector<string>& wordList) {
 
   vector<string> matches;
 
@@ -99,7 +99,7 @@ vector<string> getWordAlts(Dictionary& wordDict, vector<string>& wordList) {
   return matches;
 }
 
-void spellCheck(string checkFile, Dictionary& dict) {
+void spellCheck(string checkFile, AVLDict& dict) {
 
   // Handle exceptions from opening file
   ifstream infile(checkFile.c_str());
@@ -169,7 +169,7 @@ void spellCheck(string checkFile, Dictionary& dict) {
 
 int main(int argc, char* argv[]){
 
-  Dictionary dict = readDict();
+  AVLDict dict = readDict();
 
   cout << "Please enter the name of a text file to check" << endl;
   cout << "> ";

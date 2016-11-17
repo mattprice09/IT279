@@ -1,6 +1,6 @@
 // Implementation file for AVL search tree
 
-#include "AVLDictionary.h"
+#include "AVLDict.h"
 
 int max(int x, int y)
 {
@@ -10,23 +10,23 @@ int max(int x, int y)
     return y;
 }
 
-AVLDictionary::AVLDictionary()
+AVLDict::AVLDict()
 {
   root = NULL;
   size = 0;
 }
 
-AVLDictionary::AVLDictionary(const AVLDictionary& orig)
+AVLDict::AVLDict(const AVLDict& orig)
 {
   this->copyDict(orig);
 }
 
-AVLDictionary::~AVLDictionary()
+AVLDict::~AVLDict()
 {
   this->deleteDict();
 }
 
-AVLDictionary& AVLDictionary::operator=(const AVLDictionary& orig)
+AVLDict& AVLDict::operator=(const AVLDict& orig)
 {
   if (this->root != orig.root)
     {
@@ -102,7 +102,7 @@ void Insert(AVLTreeNode* p, AVLTreeNode*& t)
   t->height =max(GetNodeHeight(t->left), GetNodeHeight(t->right)) + 1;
 }
 
-void AVLDictionary::AddEntry(string anEntry)
+void AVLDict::AddEntry(string anEntry)
 {
   // create the node
   AVLTreeNode* p = new AVLTreeNode;
@@ -114,7 +114,7 @@ void AVLDictionary::AddEntry(string anEntry)
   Insert(p, root);
 }
 
-bool AVLDictionary::FindEntry(string key)
+bool AVLDict::FindEntry(string key)
 {
   AVLTreeNode* q = root;
   bool found = false;
@@ -147,7 +147,7 @@ void PrintInOrder(AVLTreeNode* p, ostream& outStream)
     }
 }
 
-void AVLDictionary::PrintSorted(ostream& outStream)
+void AVLDict::PrintSorted(ostream& outStream)
 {
   PrintInOrder(root,outStream);
 }
@@ -167,7 +167,7 @@ AVLTreeNode* copyTree(const AVLTreeNode* node)
     }
 }
 
-void AVLDictionary::copyDict(const AVLDictionary& orig)
+void AVLDict::copyDict(const AVLDict& orig)
 {
   this->size = orig.size;
   this->root = copyTree(orig.root);
@@ -183,7 +183,7 @@ void deleteTree(AVLTreeNode* node)
     }
 }
 
-void AVLDictionary:: deleteDict()
+void AVLDict:: deleteDict()
 {
   deleteTree(this->root);
   this->root = NULL;

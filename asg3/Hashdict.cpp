@@ -1,24 +1,24 @@
 // Implementation file for AVL search tree
 
-#include "Dictionary.h"
+#include "HashDict.h"
 
-Dictionary::Dictionary()
+HashDict::HashDict()
 {
   size = 12;
   string[] table = new string[size];
 }
 
-Dictionary::Dictionary(const Dictionary& orig)
+HashDict::HashDict(const HashDict& orig)
 {
   this->copyDict(orig);
 }
 
-Dictionary::~Dictionary()
+HashDict::~HashDict()
 {
   this->deleteDict();
 }
 
-Dictionary& Dictionary::operator=(const Dictionary& orig)
+HashDict& HashDict::operator=(const HashDict& orig)
 {
   if (this->root != orig.root)
     {
@@ -30,7 +30,7 @@ Dictionary& Dictionary::operator=(const Dictionary& orig)
 
 
 
-void Dictionary::AddEntry(string anEntry)
+void HashDict::AddEntry(string anEntry)
 {
   // create the node
   AVLTreeNode* p = new AVLTreeNode;
@@ -42,7 +42,7 @@ void Dictionary::AddEntry(string anEntry)
   Insert(p, root);
 }
 
-bool Dictionary::FindEntry(string key)
+bool HashDict::FindEntry(string key)
 {
   AVLTreeNode* q = root;
   bool found = false;
@@ -65,7 +65,7 @@ bool Dictionary::FindEntry(string key)
   return found;
 }
 	
-void Dictionary::PrintSorted(ostream& outStream)
+void HashDict::PrintSorted(ostream& outStream)
 {
   PrintInOrder(root,outStream);
 }
@@ -85,13 +85,13 @@ AVLTreeNode* copyTree(const AVLTreeNode* node)
     }
 }
 
-void Dictionary::copyDict(const Dictionary& orig)
+void HashDict::copyDict(const HashDict& orig)
 {
   this->size = orig.size;
   this->root = copyTree(orig.root);
 }
 
-void Dictionary:: deleteDict()
+void HashDict:: deleteDict()
 {
   deleteTree(this->root);
   this->root = NULL;

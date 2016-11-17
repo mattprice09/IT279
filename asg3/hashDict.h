@@ -9,7 +9,7 @@
 using namespace std;
 
 
-class Dictionary
+class HashDict
 {
  private:
   string[] table;
@@ -17,16 +17,16 @@ class Dictionary
 
  public:
 
-  Dictionary();
+  HashDict();
   // Creates an empty dictionary;
 
-  Dictionary(const Dictionary& orig);
+  HashDict(const HashDict& orig);
   // Copy constructor
 
-  virtual ~Dictionary();
+  virtual ~HashDict();
   // Destructor
 
-  Dictionary& operator=(const Dictionary& orig);
+  HashDict& operator=(const HashDict& orig);
   // assignment operator
 
   void AddEntry(string anEntry);
@@ -42,11 +42,11 @@ class Dictionary
 
  private:
 
-  void copyDict(const Dictionary& orig);
+  void copyDict(const HashDict& orig);
   // copies the contents of orig to this dictionary
 
   void deleteDict();
-  // properly frees all memory occupied by this Dictionary
+  // properly frees all memory occupied by this HashDict
 
 };
 
