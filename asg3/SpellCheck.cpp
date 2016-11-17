@@ -5,37 +5,55 @@ using namespace std;
 #include <string>
 #include <cstdlib>
 #include <fstream>
+#include <vector>
 
 // Read the input file, return Dictionary
-Dictionary readDict(std::string inputFile) {
+Dictionary readDict(string inputFile) {
 
 }
 
 // Add all permutations of the word possible by adding any letter in any position
-void getWordsByAdding(std::vector mainList, std::string word) {
+void getWordsByAdding(vector<string> &mainList, string word) {
 
+  // vector of all letters
+  string alph = "abcdefghijklmnopqrstuvwxyz";
+  vector<char> letters(alph.begin(), alph.end());
+
+  // add each letter in the alphabet to each possible position in the string
+  for (int c = 0; c < letters.size(); c++) {
+    for (int i = 0 ; i < word.size(); i++) {
+      mainList.push_back(word.substr(0, i) + letters[c] + word.substr(i));
+    }
+    mainList.push_back(word + letters[c]);
+  }
 }
 
 // Add words with removing letters
-void getWordsByRemoving(std::vector mainList, string word) {
+void getWordsByRemoving(vector mainList, string word) {
 
 }
 
 // Add words with exchanging letters
-void getWordsByExchanging(std::vector mainList, string word) {
+void getWordsByExchanging(vector mainList, string word) {
 
 }
 
 // The main function that checks if the word is valid
-bool validWord(Dictionary wordDict, std::vector wordList) {
+// Returned vector will be empty if the word was valid. Otherwise, it contains
+// all possible alternative words
+vector getWordAlts(Dictionary wordDict, vector wordList) {
 
 }
 
 int main(int argc, char* argv[]){
 
+  vector<string> wordOptions;
+  getWordsByAdding(wordOptions, "dog");
+
+  Require the input file as a CLI argument
   if(argc < 2) {
-    std::cerr << "Usage: " << argv[0] << " INPUT_FILE"
-      << std::endl;
+    cerr << "Usage: " << argv[0] << " INPUT_FILE"
+      << endl;
     return 1;
   }
 
