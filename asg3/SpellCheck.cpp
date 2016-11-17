@@ -29,28 +29,32 @@ void getWordsByAdding(vector<string> &mainList, string word) {
 }
 
 // Add words with removing letters
-void getWordsByRemoving(vector mainList, string word) {
+void getWordsByRemoving(vector<string> mainList, string word) {
 
+  for (int i = 1; i < word.size(); i++) {
+    mainList.push_back(word.substr(0, i-1) + word.substr(i));
+  }
+  mainList.push_back(word.substr(0, word.size()-1));
 }
 
 // Add words with exchanging letters
-void getWordsByExchanging(vector mainList, string word) {
+void getWordsByExchanging(vector<string> mainList, string word) {
 
+  for (int i = 1; i < word.size(); i++) {
+    mainList.push_back(string() + word.substr(0, i-1) + word[i] + word[i-1] + word.substr(i+1));
+  }
 }
 
 // The main function that checks if the word is valid
 // Returned vector will be empty if the word was valid. Otherwise, it contains
 // all possible alternative words
-vector getWordAlts(Dictionary wordDict, vector wordList) {
+vector<string> getWordAlts(Dictionary wordDict, vector<string> wordList) {
 
 }
 
 int main(int argc, char* argv[]){
 
-  vector<string> wordOptions;
-  getWordsByAdding(wordOptions, "dog");
-
-  Require the input file as a CLI argument
+  // Require the input file as a CLI argument
   if(argc < 2) {
     cerr << "Usage: " << argv[0] << " INPUT_FILE"
       << endl;
