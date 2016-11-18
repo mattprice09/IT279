@@ -43,6 +43,15 @@ class HashDict: Dictionary {
   void deleteDict();
   // properly frees all memory occupied by this Dictionary
 
+  void rehash();
+
+  unsigned int hash(string word);
+
+  // When adding value, pass in empty string
+  // When finding value, pass in search term
+  // Returns the location of the matched string, returns -1 if not found
+  int resolveCollision(string word, int base);
+
 };
 
 #endif
