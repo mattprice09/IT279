@@ -12,10 +12,10 @@ using namespace std;
 
 
 // Read the input file, return Dictionary
-Dictionary readDict() {
+Dictionary readDict(string dictFile) {
   Dictionary dict;
   string dictTemp = "";
-  ifstream data ("dict.txt");
+  ifstream data (dictFile.c_str());
   set<string> uniques;
   if (data.is_open()) {
     while (getline(data,dictTemp)) {
@@ -23,6 +23,10 @@ Dictionary readDict() {
       while (dictTemp[i]) {
         dictTemp[i] = (tolower(dictTemp[i]));
         i++;
+      }
+
+      if (dictTemp == "") {
+        continue;
       }
 
       // Handle duplicates from dictionary file
@@ -33,7 +37,7 @@ Dictionary readDict() {
     }
     data.close();
   }
-  dict.PrintSorted(cout);
+
   return dict;
 }
 
@@ -176,7 +180,9 @@ void spellCheck(string checkFile, Dictionary& dict) {
 
 int main(int argc, char* argv[]){
 
-  Dictionary dict = readDict();
+  string dictFile = "bigdict.txt";
+
+  Dictionary dict = readDict(dictFile);
 
   cout << "Please enter the name of a text file to check" << endl;
   cout << "> ";
