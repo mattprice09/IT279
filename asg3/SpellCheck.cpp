@@ -1,4 +1,4 @@
-#include "Dictionary.h"
+#include "HashDict.h"
 #include "HashDict.h"
 
 using namespace std;
@@ -11,9 +11,9 @@ using namespace std;
 #include <vector>
 
 
-// Read the input file, return Dictionary
-Dictionary readDict(string dictFile) {
-  Dictionary dict;
+// Read the input file, return HashDict
+HashDict readDict(string dictFile) {
+  HashDict dict;
   string dictTemp = "";
   ifstream data (dictFile.c_str());
   set<string> uniques;
@@ -94,7 +94,7 @@ vector<string> getWordOptions(string word) {
 }
 
 // The main function that checks if the word is valid
-vector<string> getWordAlts(Dictionary& wordDict, vector<string>& wordList) {
+vector<string> getWordAlts(HashDict& wordDict, vector<string>& wordList) {
 
   vector<string> matches;
 
@@ -107,7 +107,7 @@ vector<string> getWordAlts(Dictionary& wordDict, vector<string>& wordList) {
   return matches;
 }
 
-void spellCheck(string checkFile, Dictionary& dict) {
+void spellCheck(string checkFile, HashDict& dict) {
 
   // Handle exceptions from opening file
   ifstream infile(checkFile.c_str());
@@ -180,9 +180,9 @@ void spellCheck(string checkFile, Dictionary& dict) {
 
 int main() {
 
-  string dictFile = "bigdict.txt";
+  string dictFile = "dict.txt";
 
-  Dictionary dict = readDict(dictFile);
+  HashDict dict = readDict(dictFile);
 
   cout << "Please enter the name of a text file to check" << endl;
   cout << "> ";

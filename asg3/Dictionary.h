@@ -3,9 +3,11 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+#include <algorithm>
 #include <iostream>
 #include <cstring>
 #include <string>
+#include <vector>
 
 using namespace std;
 

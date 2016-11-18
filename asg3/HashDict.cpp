@@ -2,24 +2,6 @@
 
 #include "HashDict.h"
 
-// Helper used by HashDict::nextPrime
-bool isPrime(int size) {
-  for (int i=2; i<size; i++) { 
-    if(size % i == 0){
-      return false;
-   }
-  }
-  return true;
-}
-
-// Helper to find next prime number
-int nextPrime(int size) {
-  while (!isPrime(size)) { 
-    size++;
-  }
-  return size;
-}
-
 // Default constructor
 HashDict::HashDict() {
   size = 13;
@@ -44,7 +26,8 @@ HashDict::~HashDict() {
 
 // "Assignment" operator
 HashDict& HashDict::operator=(const HashDict& orig) {
-  return new HashDict(orig);
+  // return new HashDict(orig);
+  return *this;
 }
 
 // GETTERS/SETTERS START
@@ -75,6 +58,25 @@ int HashDict::getNElements() const {
 }
 // GETTERS/SETTERS END
 
+
+// Helper used by HashDict::nextPrime
+bool HashDict::isPrime(int size) {
+  for (int i=2; i<size; i++) { 
+    if(size % i == 0){
+      return false;
+   }
+  }
+  return true;
+}
+
+// Helper to find next prime number
+int HashDict::nextPrime(int size) {
+  while (!isPrime(size)) { 
+    size++;
+  }
+  return size;
+}
+
 // Hash function
 unsigned int HashDict::hash(string& word) {
   unsigned int hashVal = 0;
@@ -98,7 +100,7 @@ void HashDict::rehash() {
 
   // Delete and recreate the class table
   delete[] this->table;
-  this->size = nextPrime(this->size * 2);
+  this->size = this->nextPrime(this->size * 2);
   this->table = new string[this->size];
   this->nElements = 0;
   
@@ -134,7 +136,7 @@ int HashDict::resolveCollision(string word, int base) {
 void HashDict::AddEntry(string anEntry) {
   unsigned int val = hash(anEntry);
 
-  cout << "Root index: " << val << ", word: " << anEntry << endl;
+  // cout << "Root index: " << val << ", word: " << anEntry << endl;
 
   if(!this->table[val].empty()) {
     // Resolve collision using quadratic probing
@@ -159,11 +161,10 @@ bool HashDict::FindEntry(string key) {
     }
   }
   else {
-    val = resolveCollision("",val);
+    val = resolveCollision(key,val);
     if(val == -1) {
       found = false;
-    }
-    else {
+    } else {
       found = true;
     }
   } 
@@ -171,7 +172,17 @@ bool HashDict::FindEntry(string key) {
 }
 	
 void HashDict::PrintSorted(ostream& outStream) {
-
+  vector<string> sortVals; 
+  for(int i = 0;i<this->size;i++) {
+    if(!table[i].empty()) {
+      sortVals.push_back (table[i]);
+    }
+  }
+  std::sort (sortVals.begin(), sortVals.end());
+  vector<string>::iterator it;
+    for (it = sortVals.begin(); it < sortVals.end(); ++it) {
+      outStream << *it << endl;
+    }
 }
 
 // Deep copy a dictionary
@@ -195,27 +206,27 @@ void HashDict::deleteDict() {
 }
 
 
-int main() {
+// int main() {
 
-  HashDict* dict = new HashDict();
+//   HashDict* dict = new HashDict();
 
-  bool debug = false;
+//   bool debug = false;
 
-  if (debug){
-    for (int x = 0; x < 8; x++) {
-      dict->AddEntry("apple");
-      cout << endl << "Added 'apple', current dict capacity: " << dict->getNElements();
-      cout << " / " << dict->getSize() << endl;
-      for (int i = 0; i < dict->getSize(); i++) {
-        cout << "Index: " << i << ", " + dict->getTableItem(i) << endl;
-      }
+//   if (debug){
+//     for (int x = 0; x < 8; x++) {
+//       dict->AddEntry("apple");
+//       cout << endl << "Added 'apple', current dict capacity: " << dict->getNElements();
+//       cout << " / " << dict->getSize() << endl;
+//       for (int i = 0; i < dict->getSize(); i++) {
+//         cout << "Index: " << i << ", " + dict->getTableItem(i) << endl;
+//       }
 
-      cout << "Press enter to view next iteration" << endl;
-      cin.ignore();
-    }
-  }
+//       cout << "Press enter to view next iteration" << endl;
+//       cin.ignore();
+//     }
+//   }
 
-  if (dict->FindEntry("apple")) {
-    cout << "Found" << endl;
-  }
-}
+//   if (dict->FindEntry("apple")) {
+//     cout << "Found" << endl;
+//   }
+// }
