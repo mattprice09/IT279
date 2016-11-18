@@ -56,23 +56,31 @@ unsigned int HashDict::hash(string& word) {
 
 void HashDict::rehash() {
 
-  this->size = this->size * 2;
-
   // Get items from current table
+  int oldSize = this->size;
   string *temp = new string[this->size];
-  for (int i = 0; i < this->size; i++) {
-    if (this->table[i] != "") {
+  for (int i = 0; i < oldSize; i++) {
+    temp[i] = this->table[i];
+  }
+
+  // Delete and recreate the class table
+  delete[] this->table;
+  this->size *= 2;
+  this->table = new string[this->size];
+  
+  // Insert elements from old table to new table
+  for (int i = 0; i < oldSize; i++) {
+    if (!temp[i].empty()) {
 
       // hash base value
-      unsigned int hashVal = this->hash(this->table[i]);
+      unsigned int hashVal = this->hash(temp[i]);
       // find first open table location via quadratic probing
       int hashLocation = this->resolveCollision("", hashVal);
-      temp[hashLocation] = this->table[i];
+      this->table[hashLocation] = temp[i];
     }
   }
   
-  // Copy new array into class table
-  std::memcpy(this->table, temp, this->size);
+  delete[] temp;
 }
 
 // When adding value, pass in empty string
@@ -82,6 +90,7 @@ int HashDict::resolveCollision(string word, int base) {
 	int i = 1;
   int curr = (base + i) % this->size;
 	while(this->table[curr].compare(word) != 0 && !this->table[curr].empty()) {
+    // Multiple index by 2 as long as there isn't a word match and the current index isn't empty
 		i *= 2;
     curr = (base + i) % this->size;
 	}
@@ -171,7 +180,7 @@ int main() {
   string* t = dict->getTable();
 
   for (int i = 0; i < dict->getSize(); i++) {
-    cout << t[i] << endl;
+    cout << "Index: " << i << ", " + t[i] << endl;
   }
   
 }
