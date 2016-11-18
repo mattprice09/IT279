@@ -8,6 +8,7 @@
 class HashDict: Dictionary {
  private:
   string* table;
+  int n_elements;
   int size;
 
  public:

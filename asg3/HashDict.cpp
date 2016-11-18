@@ -34,10 +34,21 @@ unsigned int HashDict::hash(string& word) {
 void HashDict::rehash() {
 
   // Get items from current table
-  string* temp = new string[this.size * 2];
+  string *temp = new string[this.size * 2];
   for (int i = 0; i < this.size; i++) {
-    temp[i] = this.table[i];
+    if (this.table[i] != "") {
+
+      // hash base value
+      unsigned int hashVal = this.hash(this.table[i]);
+      // find first open table location via quadratic probing
+      int hashLocation = this.resolveCollision("", hashVal);
+      temp[hashLocation] = this.table[i];
+    }
   }
+
+  // Copy new array into class table
+  memcpy(this.table, temp, this.size * 2);
+
 }
 
 // When adding value, pass in empty string
