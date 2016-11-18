@@ -55,7 +55,17 @@ void HashDict::rehash() {
 // When finding value, pass in search term
 // Returns the location of the matched string, returns -1 if not found
 int HashDict::resolveCollision(string word, int base) {
-
+	int i = 1;
+	while(table[base + i].compare(word) != 0 || table[base + i].empty()) {
+		i *= 2;
+	}
+	
+	if(!word.empty() && table[base+i].empty) {
+		base = -1;
+	} else {
+		base += i;
+	}
+	return base;
 }
 
 HashDict& HashDict::operator=(const HashDict& orig) {
