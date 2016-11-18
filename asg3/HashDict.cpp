@@ -2,9 +2,28 @@
 
 #include "HashDict.h"
 
+// Helper used by HashDict::nextPrime
+bool isPrime(int size) {
+  for (int i=2; i<size; i++) { 
+    if(size % i == 0){
+      return false;
+   }
+  }
+  return true;
+}
+
+// Helper to find next prime number
+int nextPrime(int size) {
+  while (!isPrime(size)) { 
+    size++;
+  }
+  return size;
+}
+
+// Default constructor
 HashDict::HashDict() {
   size = 13;
-  n_elements = 0;
+  nElements = 0;
   table = new string[size];
 
   // Initialize empty table
@@ -13,35 +32,48 @@ HashDict::HashDict() {
   }
 }
 
+// Copy constructor
 HashDict::HashDict(const HashDict& orig) {
   this->copyDict(orig);
 }
 
+// Deconstructor
 HashDict::~HashDict() {
   this->deleteDict();
 }
 
+// "Assignment" operator
+HashDict& HashDict::operator=(const HashDict& orig) {
+  return new HashDict(orig);
+}
+
+// GETTERS/SETTERS START
 void HashDict::setTable(string item, int i) {
   this->table[i] = item;
 }
 
-string* HashDict::getTable() {
+string* HashDict::getTable() const {
   return this->table;
+}
+
+string HashDict::getTableItem(int i) const {
+  return this->table[i];
 }
 
 void HashDict::setSize(int i) {
   this->size = i;
 }
-int HashDict::getSize() {
+int HashDict::getSize() const {
   return this->size;
 }
 
 void HashDict::setNElements(int i) {
-  this->n_elements = i;
+  this->nElements = i;
 }
-int HashDict::getNElements() {
-  return this->n_elements;
+int HashDict::getNElements() const {
+  return this->nElements;
 }
+// GETTERS/SETTERS END
 
 // Hash function
 unsigned int HashDict::hash(string& word) {
@@ -54,6 +86,7 @@ unsigned int HashDict::hash(string& word) {
   return hashVal % this->size; 
 }
 
+// Rehash the table/reinsert all elements
 void HashDict::rehash() {
 
   // Get items from current table
@@ -65,8 +98,9 @@ void HashDict::rehash() {
 
   // Delete and recreate the class table
   delete[] this->table;
-  this->size *= 2;
+  this->size = nextPrime(this->size * 2);
   this->table = new string[this->size];
+  this->nElements = 0;
   
   // Insert elements from old table to new table
   for (int i = 0; i < oldSize; i++) {
@@ -74,7 +108,6 @@ void HashDict::rehash() {
       this->AddEntry(temp[i]);
     }
   }
-  
   delete[] temp;
 }
 
@@ -90,29 +123,33 @@ int HashDict::resolveCollision(string word, int base) {
     curr = (base + i) % this->size;
 	}
 	
+  // Return -1 if we did not find a search term
 	if(!word.empty() && this->table[curr].empty()) {
 		curr = -1;
 	} 
 	return curr;
 }
 
-HashDict& HashDict::operator=(const HashDict& orig) {
-  return *this;
-}
-
+// Add an entry
 void HashDict::AddEntry(string anEntry) {
   unsigned int val = hash(anEntry);
+
+  cout << "Root index: " << val << ", word: " << anEntry << endl;
+
   if(!this->table[val].empty()) {
+    // Resolve collision using quadratic probing
     val = this->resolveCollision("",val);
   }
   this->table[val] = anEntry;
-  this->n_elements ++;
+  this->nElements ++;
 
-  if ((float)this->n_elements / (float)this->size >= 0.5) {
+  // Rehash if table capacity is >= 50%
+  if ((float)this->nElements / (float)this->size >= 0.5) {
     this->rehash();
   }
 }
 
+// Search for an item in the dictionary
 bool HashDict::FindEntry(string key) {
   bool found = false;
   int val = hash(key);
@@ -134,48 +171,51 @@ bool HashDict::FindEntry(string key) {
 }
 	
 void HashDict::PrintSorted(ostream& outStream) {
+
 }
 
+// Deep copy a dictionary
 void HashDict::copyDict(const HashDict& orig) {
-}
 
-void HashDict:: deleteDict() {
-}
+  this->deleteDict();
 
-bool isPrime(int size) {
-  for (int i=2; i<size; i++) { 
-    if(size % i == 0){
-      return false;
-   }
+  // Deep copy the provided HashDict
+  for (int i = 0; i < orig.getSize(); i++) {
+    this->table[i] = orig.getTableItem(i);
   }
-  return true;
+  this->size = orig.getSize();
+  this->nElements = orig.getNElements();
 }
+
+// Delete dictionary data
+void HashDict::deleteDict() {
+  delete[] this->table;
+  this->size = 0;
+  this->nElements = 0;
+}
+
 
 int main() {
 
   HashDict* dict = new HashDict();
 
-  // dict->setTable("apple", 0);
-  // dict->setTable("orange", 1);
-  // dict->setTable("dfsasdf", 4);
-  // dict->setTable("testing", 5);
-  // dict->setTable("word", 9);
+  bool debug = false;
 
-  dict->AddEntry("apple");
-  dict->AddEntry("apple");
-  dict->AddEntry("apple");
-  dict->AddEntry("apple");
-  dict->AddEntry("apple");
-  dict->AddEntry("apple");
-  dict->AddEntry("apple");
-  // dict->AddEntry("apple");
+  if (debug){
+    for (int x = 0; x < 8; x++) {
+      dict->AddEntry("apple");
+      cout << endl << "Added 'apple', current dict capacity: " << dict->getNElements();
+      cout << " / " << dict->getSize() << endl;
+      for (int i = 0; i < dict->getSize(); i++) {
+        cout << "Index: " << i << ", " + dict->getTableItem(i) << endl;
+      }
 
-  // dict->rehash();
-
-  string* t = dict->getTable();
-
-  for (int i = 0; i < dict->getSize(); i++) {
-    cout << "Index: " << i << ", " + t[i] << endl;
+      cout << "Press enter to view next iteration" << endl;
+      cin.ignore();
+    }
   }
-  
+
+  if (dict->FindEntry("apple")) {
+    cout << "Found" << endl;
+  }
 }

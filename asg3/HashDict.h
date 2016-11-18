@@ -8,7 +8,7 @@
 class HashDict: public Dictionary {
  private:
   string* table;
-  int n_elements;
+  int nElements;
   int size;
 
  public:
@@ -26,13 +26,15 @@ class HashDict: public Dictionary {
   // assignment operator
 
   void setTable(string item, int i);
-  string* getTable();
+  string* getTable() const;
+
+  string getTableItem(int i) const;
 
   void setSize(int i);
-  int getSize();
+  int getSize() const;
 
   void setNElements(int i);
-  int getNElements();
+  int getNElements() const;
 
   void AddEntry(string anEntry);
   // Preconditions: anEntry has a key not already in the dictionary
@@ -45,7 +47,7 @@ class HashDict: public Dictionary {
   void PrintSorted(ostream& outStream);
   // Postconditions: has printed contents of the dictionary in order
 
- public:
+ private:
 
   void copyDict(const HashDict& orig);
   // copies the contents of orig to this dictionary
@@ -61,6 +63,11 @@ class HashDict: public Dictionary {
   // When finding value, pass in search term
   // Returns the location of the matched string, returns -1 if not found
   int resolveCollision(string word, int base);
+
+  // Helpers to find next prime number
+  int nextPrime(int size);
+  bool isPrime(int size);
+
 
 };
 
