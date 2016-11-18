@@ -71,12 +71,7 @@ void HashDict::rehash() {
   // Insert elements from old table to new table
   for (int i = 0; i < oldSize; i++) {
     if (!temp[i].empty()) {
-
-      // hash base value
-      unsigned int hashVal = this->hash(temp[i]);
-      // find first open table location via quadratic probing
-      int hashLocation = this->resolveCollision("", hashVal);
-      this->table[hashLocation] = temp[i];
+      this->AddEntry(temp[i]);
     }
   }
   
@@ -106,11 +101,11 @@ HashDict& HashDict::operator=(const HashDict& orig) {
 }
 
 void HashDict::AddEntry(string anEntry) {
-  int val = hash(anEntry);
-  if(!table[val].empty()) {
-    val = resolveCollision("",val);
+  unsigned int val = hash(anEntry);
+  if(!this->table[val].empty()) {
+    val = this->resolveCollision("",val);
   }
-  table[val] = anEntry;
+  this->table[val] = anEntry;
   this->n_elements ++;
 
   if ((float)this->n_elements / (float)this->size >= 0.5) {
