@@ -4,7 +4,7 @@
 #define DICTIONARY_H
 
 #include <iostream>
-#include <memcpy>
+#include <cstring>
 #include <string>
 
 using namespace std;

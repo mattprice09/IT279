@@ -8,7 +8,7 @@ HashDict::HashDict() {
   table = new string[size];
 
   // Initialize empty table
-  for (int i = 0; i < table.size(); i++) {
+  for (int i = 0; i < size; i++) {
     table[i] = "";
   }
 }
@@ -21,34 +21,58 @@ HashDict::~HashDict() {
   this->deleteDict();
 }
 
+void HashDict::setTable(string item, int i) {
+  this->table[i] = item;
+}
+
+string* HashDict::getTable() {
+  return this->table;
+}
+
+void HashDict::setSize(int i) {
+  this->size = i;
+}
+int HashDict::getSize() {
+  return this->size;
+}
+
+void HashDict::setNElements(int i) {
+  this->n_elements = i;
+}
+int HashDict::getNElements() {
+  return this->n_elements;
+}
+
 // Hash function
 unsigned int HashDict::hash(string& word) {
   unsigned int hashVal = 0;
 
-  for (char ch : word)
-    hashVal = 37 * hashVal + ch
+  for (int i = 0; i < word.size(); i++) {
+    hashVal = 37 * hashVal + word[i];
+  }
 
-  return hashVal % this.size; 
+  return hashVal % this->size; 
 }
 
 void HashDict::rehash() {
 
+  this->size = this->size * 2;
+
   // Get items from current table
-  string *temp = new string[this.size * 2];
-  for (int i = 0; i < this.size; i++) {
-    if (this.table[i] != "") {
+  string *temp = new string[this->size];
+  for (int i = 0; i < this->size; i++) {
+    if (this->table[i] != "") {
 
       // hash base value
-      unsigned int hashVal = this.hash(this.table[i]);
+      unsigned int hashVal = this->hash(this->table[i]);
       // find first open table location via quadratic probing
-      int hashLocation = this.resolveCollision("", hashVal);
-      temp[hashLocation] = this.table[i];
+      int hashLocation = this->resolveCollision("", hashVal);
+      temp[hashLocation] = this->table[i];
     }
   }
-
+  
   // Copy new array into class table
-  memcpy(this.table, temp, this.size * 2);
-
+  std::memcpy(this->table, temp, this->size);
 }
 
 // When adding value, pass in empty string
@@ -56,16 +80,16 @@ void HashDict::rehash() {
 // Returns the location of the matched string, returns -1 if not found
 int HashDict::resolveCollision(string word, int base) {
 	int i = 1;
-	while(table[base + i].compare(word) != 0 || table[base + i].empty()) {
+  int curr = (base + i) % this->size;
+	while(this->table[curr].compare(word) != 0 && !this->table[curr].empty()) {
 		i *= 2;
+    curr = (base + i) % this->size;
 	}
 	
-	if(!word.empty() && table[base+i].empty) {
-		base = -1;
-	} else {
-		base += i;
-	}
-	return base;
+	if(!word.empty() && this->table[curr].empty()) {
+		curr = -1;
+	} 
+	return curr;
 }
 
 HashDict& HashDict::operator=(const HashDict& orig) {
@@ -73,9 +97,36 @@ HashDict& HashDict::operator=(const HashDict& orig) {
 }
 
 void HashDict::AddEntry(string anEntry) {
+  int val = hash(anEntry);
+  if(!table[val].empty()) {
+    val = resolveCollision("",val);
+  }
+  table[val] = anEntry;
+  this->n_elements ++;
+
+  if ((float)this->n_elements / (float)this->size >= 0.5) {
+    this->rehash();
+  }
 }
 
 bool HashDict::FindEntry(string key) {
+  bool found = false;
+  int val = hash(key);
+  if(!table[val].empty()) {
+    if(table[val] == key) {
+      found = true;
+    }
+  }
+  else {
+    val = resolveCollision("",val);
+    if(val == -1) {
+      found = false;
+    }
+    else {
+      found = true;
+    }
+  } 
+  return found;
 }
 	
 void HashDict::PrintSorted(ostream& outStream) {
@@ -87,3 +138,40 @@ void HashDict::copyDict(const HashDict& orig) {
 void HashDict:: deleteDict() {
 }
 
+bool isPrime(int size) {
+  for (int i=2; i<size; i++) { 
+    if(size % i == 0){
+      return false;
+   }
+  }
+  return true;
+}
+
+int main() {
+
+  HashDict* dict = new HashDict();
+
+  // dict->setTable("apple", 0);
+  // dict->setTable("orange", 1);
+  // dict->setTable("dfsasdf", 4);
+  // dict->setTable("testing", 5);
+  // dict->setTable("word", 9);
+
+  dict->AddEntry("apple");
+  dict->AddEntry("apple");
+  dict->AddEntry("apple");
+  dict->AddEntry("apple");
+  dict->AddEntry("apple");
+  dict->AddEntry("apple");
+  dict->AddEntry("apple");
+  // dict->AddEntry("apple");
+
+  // dict->rehash();
+
+  string* t = dict->getTable();
+
+  for (int i = 0; i < dict->getSize(); i++) {
+    cout << t[i] << endl;
+  }
+  
+}

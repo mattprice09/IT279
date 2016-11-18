@@ -178,7 +178,7 @@ void spellCheck(string checkFile, Dictionary& dict) {
   }
 }
 
-int main(int argc, char* argv[]){
+int main() {
 
   string dictFile = "bigdict.txt";
 

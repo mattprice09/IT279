@@ -5,7 +5,7 @@
 
 #include "Dictionary.h"
 
-class HashDict: Dictionary {
+class HashDict: public Dictionary {
  private:
   string* table;
   int n_elements;
@@ -25,6 +25,15 @@ class HashDict: Dictionary {
   HashDict& operator=(const HashDict& orig);
   // assignment operator
 
+  void setTable(string item, int i);
+  string* getTable();
+
+  void setSize(int i);
+  int getSize();
+
+  void setNElements(int i);
+  int getNElements();
+
   void AddEntry(string anEntry);
   // Preconditions: anEntry has a key not already in the dictionary
   // Postconditions: anEntry has been added to the dictionary
@@ -36,7 +45,7 @@ class HashDict: Dictionary {
   void PrintSorted(ostream& outStream);
   // Postconditions: has printed contents of the dictionary in order
 
- private:
+ public:
 
   void copyDict(const HashDict& orig);
   // copies the contents of orig to this dictionary
@@ -46,7 +55,7 @@ class HashDict: Dictionary {
 
   void rehash();
 
-  unsigned int hash(string word);
+  unsigned int hash(string& word);
 
   // When adding value, pass in empty string
   // When finding value, pass in search term
