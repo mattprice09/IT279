@@ -1,5 +1,4 @@
 #include "Dictionary.h"
-#include "Dictionary.h"
 
 using namespace std;
 
@@ -33,17 +32,7 @@ Dictionary readDict(string dictFile) {
       if (dictTemp.size() == 0) {
         continue;
       }
-    // while (getline(data,dictTemp)) {
-    //   int i =0;
-    //   while (dictTemp[i]) {
-    //     dictTemp[i] = (tolower(dictTemp[i]));
-    //     i++;
-    //   }
-
-    //   if (dictTemp == "") {
-    //     continue;
-    //   }
-
+      
       // Handle duplicates from dictionary file
       if (uniques.find(dictTemp) == uniques.end()) {
         dict.AddEntry(dictTemp);
@@ -197,10 +186,9 @@ void spellCheck(string checkFile, Dictionary
 
 int main() {
 
-  string dictFile = "dict.txt";
+  string dictFile = "bigdict.txt";
 
-  Dictionary
- dict = readDict(dictFile);
+  Dictionary dict = readDict(dictFile);
 
   cout << "Please enter the name of a text file to check" << endl;
   cout << "> ";

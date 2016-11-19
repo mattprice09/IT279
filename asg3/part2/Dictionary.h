@@ -1,16 +1,14 @@
-// file to implement a binary search tree of Entry objects
+// file to implement a hash table
+// duplicated and name kept from prompt file to allow us to use the
+// same driver program, SpellCheck.cpp
 
-#ifndef HASHDICT_H
-#define HASHDICT_H
+#ifndef DICTIONARY_H
+#define DICTIONARY_H
 
-#include <algorithm>
-#include <iostream>
-#include <cstring>
 #include <string>
-#include <vector>
 using namespace std;
 
-class HashDict {
+class Dictionary {
  private:
   string* table;
   int nElements;
@@ -18,28 +16,17 @@ class HashDict {
 
  public:
 
-  HashDict();
+  Dictionary();
   // Creates an empty dictionary;
 
-  HashDict(const HashDict& orig);
+  Dictionary(const Dictionary& orig);
   // Copy constructor
 
-  virtual ~HashDict();
+  virtual ~Dictionary();
   // Destructor
 
-  HashDict& operator=(const HashDict& orig);
+  Dictionary& operator=(const Dictionary& orig);
   // assignment operator
-
-  void setTable(string item, int i);
-  string* getTable() const;
-
-  string getTableItem(int i) const;
-
-  void setSize(int i);
-  int getSize() const;
-
-  void setNElements(int i);
-  int getNElements() const;
 
   void AddEntry(string anEntry);
   // Preconditions: anEntry has a key not already in the dictionary
@@ -54,7 +41,7 @@ class HashDict {
 
  private:
 
-  void copyDict(const HashDict& orig);
+  void copyDict(const Dictionary& orig);
   // copies the contents of orig to this dictionary
 
   void deleteDict();
