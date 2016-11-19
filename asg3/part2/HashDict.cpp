@@ -73,11 +73,11 @@ void Dictionary::rehash() {
 // Returns the location of the matched string, returns -1 if not found
 int Dictionary::resolveCollision(string word, int base) {
 	int i = 1;
-  int curr = (base + i) % size;
+  int curr = (base + (i*i)) % size;
 	while(table[curr].compare(word) != 0 && !table[curr].empty()) {
-    // Multiply index by 2 as long as there isn't a word match and the current index isn't empty
-		i *= 2;
-    curr = (base + i) % size;
+    // Increment # to square as long as there isn't a word match and the current index isn't empty
+		i++;
+    curr = (base + (i*i)) % size;
 	}
 	
   // Return -1 if we did not find a search term
