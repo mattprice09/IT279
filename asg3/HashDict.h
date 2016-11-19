@@ -3,9 +3,14 @@
 #ifndef HASHDICT_H
 #define HASHDICT_H
 
-#include "Dictionary.h"
+#include <algorithm>
+#include <iostream>
+#include <cstring>
+#include <string>
+#include <vector>
+using namespace std;
 
-class HashDict: public Dictionary {
+class HashDict {
  private:
   string* table;
   int nElements;

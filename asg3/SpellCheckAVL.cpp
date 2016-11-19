@@ -1,5 +1,5 @@
-#include "HashDict.h"
-#include "HashDict.h"
+#include "Dictionary.h"
+#include "Dictionary.h"
 
 using namespace std;
 
@@ -11,15 +11,15 @@ using namespace std;
 #include <vector>
 
 
-// Read the input file, return HashDict
-HashDict readDict(string dictFile) {
-  HashDict dict;
+// Read the input file, return Dictionary
+Dictionary readDict(string dictFile) {
+  Dictionary dict;
   string dictTemp = "";
   ifstream data (dictFile.c_str());
   set<string> uniques;
   if (data.is_open()) {
     while(!data.eof()) {
-      // Parse in the entire word
+    // Parse in the entire word
       string dictTemp = "";
       char c;
       data.get(c);
@@ -33,8 +33,6 @@ HashDict readDict(string dictFile) {
       if (dictTemp.size() == 0) {
         continue;
       }
-
-
     // while (getline(data,dictTemp)) {
     //   int i =0;
     //   while (dictTemp[i]) {
@@ -111,7 +109,8 @@ vector<string> getWordOptions(string word) {
 }
 
 // The main function that checks if the word is valid
-vector<string> getWordAlts(HashDict& wordDict, vector<string>& wordList) {
+vector<string> getWordAlts(Dictionary
+& wordDict, vector<string>& wordList) {
 
   vector<string> matches;
 
@@ -124,7 +123,8 @@ vector<string> getWordAlts(HashDict& wordDict, vector<string>& wordList) {
   return matches;
 }
 
-void spellCheck(string checkFile, HashDict& dict) {
+void spellCheck(string checkFile, Dictionary
+& dict) {
 
   // Handle exceptions from opening file
   ifstream infile(checkFile.c_str());
@@ -195,74 +195,18 @@ void spellCheck(string checkFile, HashDict& dict) {
   }
 }
 
-void chk(string checkFile, HashDict& dict) {
-
-  // Handle exceptions from opening file
-  ifstream infile(checkFile.c_str());
-  if(!infile.is_open()) {
-    cerr << "Unable to open file" <<endl;
-    exit(EXIT_FAILURE);
-  }
-
-  cout << endl << "Spellchecking..." << endl << endl;
-
-  // Read input file word by word
-  int numMisspelled = 0;
-  int lineCount = 1;
-  string checkTemp = "";
-  while(!infile.eof()) {
-
-    // Parse in the entire word
-    checkTemp = "";
-    char c;
-    infile.get(c);
-    c = tolower(c);
-    while(isalpha(c) && !infile.eof()) {
-      checkTemp += c;
-      infile.get(c);
-      c = tolower(c);
-    }
-
-    if (checkTemp.size() == 0) {
-      continue;
-    }
-
-    // Spellcheck word
-    dict.FindEntry(checkTemp);
-
-
-    if (c == '\n') {
-      // newline
-      lineCount ++;
-    }
-  }
-
-  if (!numMisspelled) {
-    cout << "Success! There were no spelling errors." << endl;
-  } else {
-    cout << "Found " << numMisspelled << " misspelled words. Please see details above." << endl;
-  }
-}
-
 int main() {
 
   string dictFile = "dict.txt";
 
-  HashDict dict = readDict(dictFile);
+  Dictionary
+ dict = readDict(dictFile);
 
-  dict.PrintSorted(cout);
-  cout << endl << endl << endl << endl;
+  cout << "Please enter the name of a text file to check" << endl;
+  cout << "> ";
+  string checkFile = "";
+  cin >> checkFile;
 
-  cout << "========Table==========" << endl;
-  for(int i = 0; i < dict.size; i++) {
-    cout << i << "|" << dict.table[i] << endl;
-  }
-  cout << "========End Table========" << endl;
-
-  // cout << "Please enter the name of a text file to check" << endl;
-  // cout << "> ";
-  // string checkFile = "";
-  // cin >> checkFile;
-
-  spellCheck("t1.txt", dict);
+  spellCheck(checkFile, dict);
+  
 }

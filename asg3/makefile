@@ -1,10 +1,12 @@
 CC=g++
 
-all: Dictionary.o HashDict.o SpellCheck.o
-	${CC} Dictionary.o HashDict.o SpellCheck.o -o asg3
+all: avl hash
 
-avl: Dictionary.o SpellCheck.o
-	${CC} Dictionary.o SpellCheck.o -o asg3
+avl: Dictionary.o SpellCheckAVL.o
+	${CC} Dictionary.o SpellCheckAVL.o -o asg3
+
+hash: HashDict.o SpellCheck.o
+	${CC} HashDict.o SpellCheck.o -o asg3Hash
 
 testHash: Dictionary.o HashDict.o
 	${CC} -g Dictionary.o HashDict.o -o testHash
@@ -17,3 +19,9 @@ HashDict.o: HashDict.cpp HashDict.h
 
 SpellCheck.o: SpellCheck.cpp
 	${CC} -c SpellCheck.cpp
+
+SpellCheckAVL.o: SpellCheckAVL.cpp
+	${CC} -c SpellCheckAVL.cpp
+
+clean:
+	rm *.o asg3*
