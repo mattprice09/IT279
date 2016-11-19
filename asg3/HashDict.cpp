@@ -91,6 +91,7 @@ unsigned int HashDict::hash(string& word) {
 // Rehash the table/reinsert all elements
 void HashDict::rehash() {
 
+cout << "Rehash" << endl;
   // Get items from current table
   int oldSize = this->size;
   string *temp = new string[this->size];
@@ -136,14 +137,21 @@ int HashDict::resolveCollision(string word, int base) {
 void HashDict::AddEntry(string anEntry) {
   unsigned int val = hash(anEntry);
 
-  // cout << "Root index: " << val << ", word: " << anEntry << endl;
+  cout << "Root index: " << val << ", word: " << anEntry << endl;
 
   if(!this->table[val].empty()) {
     // Resolve collision using quadratic probing
     val = this->resolveCollision("",val);
+    cout << "Resolve Collision: " << val << endl;
   }
   this->table[val] = anEntry;
   this->nElements ++;
+
+  // cout << "========Table " << nElements << "========" << endl;
+  // for(int i = 0; i < size; i++) {
+  //   cout << i << "|" << table[i] << endl;
+  // }
+  // cout << "========End Table========" << endl;
 
   // Rehash if table capacity is >= 50%
   if ((float)this->nElements / (float)this->size >= 0.5) {
@@ -155,16 +163,16 @@ void HashDict::AddEntry(string anEntry) {
 bool HashDict::FindEntry(string key) {
   bool found = false;
   int val = hash(key);
-  if(!table[val].empty()) {
-    if(table[val] == key) {
-      found = true;
-    }
+  // cout << "Looking for: " << key << " with hash: " << val <<  " Base contains " << table[val] << endl;
+
+  if(table[val] == key) {
+    // cout << "------Found!------" << endl;
+    found = true;
   }
-  else {
+  else if(table[val] != ""){
     val = resolveCollision(key,val);
-    if(val == -1) {
-      found = false;
-    } else {
+    // cout << "Collision resolved to: " << val << endl;
+    if(val != -1) {
       found = true;
     }
   } 

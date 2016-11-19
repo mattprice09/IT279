@@ -18,16 +18,31 @@ Dictionary readDict(string dictFile) {
   ifstream data (dictFile.c_str());
   set<string> uniques;
   if (data.is_open()) {
-    while (getline(data,dictTemp)) {
-      int i =0;
-      while (dictTemp[i]) {
-        dictTemp[i] = (tolower(dictTemp[i]));
-        i++;
+    while(!data.eof()) {
+    // Parse in the entire word
+      string dictTemp = "";
+      char c;
+      data.get(c);
+      c = tolower(c);
+      while(isalpha(c) && !data.eof()) {
+        dictTemp += c;
+        data.get(c);
+        c = tolower(c);
       }
 
-      if (dictTemp == "") {
+      if (dictTemp.size() == 0) {
         continue;
       }
+    // while (getline(data,dictTemp)) {
+    //   int i =0;
+    //   while (dictTemp[i]) {
+    //     dictTemp[i] = (tolower(dictTemp[i]));
+    //     i++;
+    //   }
+
+    //   if (dictTemp == "") {
+    //     continue;
+    //   }
 
       // Handle duplicates from dictionary file
       if (uniques.find(dictTemp) == uniques.end()) {
