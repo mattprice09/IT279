@@ -29,7 +29,7 @@ Dictionary::~Dictionary() {
 
 // "Assignment" operator
 Dictionary& Dictionary::operator=(const Dictionary& orig) {
-  // return new Dictionary(orig);
+  copyDict(orig);
   return *this;
 }
 
