@@ -6,41 +6,37 @@
 #define WDGRAPH_H
 
 using namespace std;
+#include <iostream>
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
 
 
-
 class WDGraph {
  private:
-  // Map node names to node objects so that we can efficiently get information on a vertex
-  map<int, node> nodes;
-  // Each node is an item in the adjacency list containing a vector of edges (represented by pairs).
-  // pair.first -> the destination node
-  // pair.second -> the destination weight
-  vector< vector< pair<int, int>>> adjacencyList;
-
- public:
-
   // Represents a vertex in the graph.
   class node {
   public:
 
     node();
-    node(string n);
+    node(string n, int k);
 
     string name;
     int key;
     bool visited;
-  }
+  };
+  // Map node names to node objects so that we can efficiently get information on a vertex
+  map<string, node*> nodes;
+  // Each node is an item in the adjacency list containing a vector of edges (represented by pairs).
+  // pair.first -> the destination node
+  // pair.second -> the destination weight
+  vector< vector< pair<int, int> > > adjacencyList;
+  int weight;
+
+ public:
 
   WDGraph();
-  // Creates an empty WDGraph;
-
-  WDGraph(const WDGraph& orig);
-  // Copy constructor
 
   virtual ~WDGraph();
   // Destructor
@@ -54,6 +50,8 @@ class WDGraph {
   void shortestPath(string sourceNode);
 
   void minSpanTree();
+
+  void printGraph();
 
  private:
 
