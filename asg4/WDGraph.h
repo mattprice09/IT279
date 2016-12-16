@@ -43,7 +43,7 @@ class WDGraph {
 
   void addVertex(string name);
 
-  void addEdge(string source, string dest, int weight);
+  void addEdge(string source, string sink, int weight);
 
   void topologicalSort();
 
