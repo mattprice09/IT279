@@ -16,7 +16,7 @@ using namespace std;
 class WDGraph {
  private:
   // Map node names to node objects so that we can efficiently get information on a vertex
-  map<string, node> nodes;
+  map<int, node> nodes;
   // Each node is an item in the adjacency list containing a vector of edges (represented by pairs).
   // pair.first -> the destination node
   // pair.second -> the destination weight
