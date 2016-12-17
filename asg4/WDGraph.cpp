@@ -33,6 +33,35 @@ WDGraph::~WDGraph() {
   vector<vector <pair<int, int> > >().swap(adjacencyList);
 }
 
+// Get # of nodes
+int WDGraph::getDegree() {
+  return adjacencyList.size();
+}
+
+// Get # of edges
+int WDGraph::getSize() {
+  int eNum = 0;
+  for (int i = 0; i < adjacencyList.size(); i++) {
+    eNum = eNum + adjacencyList[i].size();
+  }
+  return eNum;
+}
+
+// Get total graph weight
+int WDGraph::getTotalWeight() {
+  int tot = 0;
+  for (int i = 0; i < adjacencyList.size(); i++) {
+    for (int j = 0; j < adjacencyList[i].size(); j++) {
+      tot += adjacencyList[i][j].second;
+    }
+  }
+  return tot;
+}
+
+void WDGraph::readGraph(string fname) {
+
+}
+
 void WDGraph::addVertex(string name) {
   int i = adjacencyList.size();
 
@@ -75,7 +104,7 @@ void WDGraph::printGraph() {
   typedef map<string, node*>::iterator it_type;
   for (it_type iterator = nodes.begin(); iterator != nodes.end(); iterator++) {
     int i = iterator->second->key;
-    cout << "Name: " << iterator->first << ", key: " << i << endl;
+    cout << "> Name: " << iterator->first << ", key: " << i << endl;
 
     // Print node's edge information
     for (int e = 0; e < adjacencyList[i].size(); e++) {
@@ -97,6 +126,14 @@ int WDGraph::edgeWeight(int source, int sink) {
     }
   }
   return -1;
+}
+
+void WDGraph::topologicalSort() {
+
+}
+
+void WDGraph::shortestPath() {
+
 }
 
 // Determine the minimum spanning tree of a directed graph using Kruskal's algorithm.
@@ -123,7 +160,7 @@ void WDGraph::minSpanTree() {
     int v = pq.top()->sink;
     int w = pq.top()->weight;
     pq.pop();
-    
+
     int uSet = ds.find(u);
     int vSet = ds.find(v);
     if (uSet != vSet) {
@@ -133,6 +170,7 @@ void WDGraph::minSpanTree() {
   }
 
   // Print out minimuim spanning tree
+  cout << "Minimum spanning tree: " << endl;;
   map<int, string> keysToNames = getKeysToNames();
   for (int i = 0; i < ds.getSets().size(); i++) {
     if (ds.getSets()[i] != -1) {
@@ -143,25 +181,3 @@ void WDGraph::minSpanTree() {
   }
 }
 
-int main() {
-  WDGraph testGraph;
-
-  string v1 = "A";
-  string v2 = "B";
-  string v3 = "C";
-  string v4 = "D";
-  string v5 = "E";
-  testGraph.addVertex(v1);
-  testGraph.addVertex(v2);
-  testGraph.addVertex(v3);
-  testGraph.addVertex(v4);
-  testGraph.addVertex(v5);
-  testGraph.addEdge(v1, v2, 8);
-  testGraph.addEdge(v2, v1, 20);
-  testGraph.addEdge(v2, v5, 12);
-  testGraph.addEdge(v3, v4, 10);
-  testGraph.addEdge(v4, v2, 6);
-  testGraph.addEdge(v5, v3, 9);
-  // testGraph.printGraph();
-  testGraph.minSpanTree();
-}

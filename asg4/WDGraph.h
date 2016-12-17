@@ -38,11 +38,6 @@ class WDGraph {
 
  public:
 
-  WDGraph();
-
-  virtual ~WDGraph();
-  // Destructor
-
   class edge {
   public:
 
@@ -56,6 +51,17 @@ class WDGraph {
     int weight;
   };
 
+  WDGraph();
+
+  virtual ~WDGraph();
+  // Destructor
+
+  int getDegree();
+  int getSize();
+  int getTotalWeight();
+
+  void readGraph(string fname);
+
   void addVertex(string name);
 
   void addEdge(string source, string sink, int weight);
@@ -64,7 +70,7 @@ class WDGraph {
 
   void topologicalSort();
 
-  void shortestPath(string sourceNode);
+  void shortestPath();
 
   void minSpanTree();
 
