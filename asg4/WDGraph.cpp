@@ -149,7 +149,7 @@ void WDGraph::topologicalSort() {
 
       modList[i].push_back(whatever);
       
-      whatever = NULL:
+      whatever = 0:
     }
   }
 
