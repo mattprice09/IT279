@@ -21,11 +21,15 @@ class WDGraph {
   class node {
   public:
 
+    node();
     node(string n, int k);
+
+    bool operator()(const node* lhs, const node* rhs);
 
     string name;
     int key;
     bool visited;
+    int weight;
   };
   
   // Map node names to node objects so that we can efficiently get information on a vertex

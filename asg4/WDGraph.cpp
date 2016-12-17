@@ -1,11 +1,22 @@
 
 #include "WDGraph.h"
 
+WDGraph::node::node() {
+  name = "";
+  key = -1;
+  visited = false;
+  weight = -1;
+}
 
 WDGraph::node::node(string n, int k) {
   name = n;
   key = k;
   visited = false;
+  weight = -1;
+}
+
+bool WDGraph::node::operator ()(const node* lhs, const node* rhs) {
+  return lhs->weight > rhs->weight;
 }
 
 WDGraph::edge::edge() {
@@ -133,7 +144,87 @@ void WDGraph::topologicalSort() {
 }
 
 void WDGraph::shortestPath() {
+  string sourceNode;
 
+  cout << endl;
+  printGraph();
+  cout << endl;
+  cout << "Please enter the source node: " << endl;
+  cin >> sourceNode;
+
+  if (nodes.find(sourceNode) == nodes.end()) {
+    cout << "Invalid node name. Please try again." << endl;
+    return;
+  }
+
+  // Get map containing keys mapped to names
+  map<int, string> keysToNames = getKeysToNames();
+
+  // Initialize current weights to infinity(total graph weight + 1)
+  int infinity = getTotalWeight()+1;
+  priority_queue<node*, vector<node*>, node> pq;
+  for (int i = 0; i < adjacencyList.size(); i++) {
+    if (i != nodes[sourceNode]->key) {
+      nodes[keysToNames[i]]->weight = infinity;
+    }
+  }
+  nodes[sourceNode]->weight = 0;
+  pq.push(nodes[sourceNode]);
+
+  // Begin Dijkstra's algorithm
+  vector<int> from;
+  for (int i = 0; i < adjacencyList.size(); i++) {
+    from.push_back(-1);
+  }
+  int numComplete = 0;
+  while (numComplete < adjacencyList.size()) {
+    node* v = pq.top();
+    pq.pop();
+    if (v->visited == false) {
+
+      // Check all adjacent nodes of current node
+      for (int w = 0; w < adjacencyList[v->key].size(); w++) {
+        int cw = adjacencyList[v->key][w].second;
+        int cn = adjacencyList[v->key][w].first;
+
+        // Check if we need to decrease weight
+        if (nodes[keysToNames[cn]]->visited == false && v->weight + cw < nodes[keysToNames[cn]]->weight) {
+          nodes[keysToNames[cn]]->weight = v->weight + cw;
+          from[cn] = v->key;
+          pq.push(nodes[keysToNames[cn]]);
+        }
+      }
+      v->visited = true;
+      numComplete++;
+    }
+  }
+
+  // Print results
+  cout << endl << "Shortest path(s): " << endl;
+  for (int i = 0; i < from.size(); i++) {
+    int curr = i;
+    vector<int> path;
+    path.push_back(i);
+    int pathWeight = 0;
+    while (from[curr] > 0) {
+      path.push_back(from[curr]);
+      pathWeight = pathWeight + edgeWeight(from[curr], curr);
+      curr = from[curr];
+    }
+    if (path.size() > 0) {
+      cout << "To vertex " << keysToNames[i] << "--> ";
+      for (int j = path.size()-1; j >= 0; j--) {
+        cout << keysToNames[path[j]] << ", ";
+      }
+      cout << "path weight: " << pathWeight << endl;
+    }
+  }
+  
+  // Reset graph so that it can be used again
+  for (int i = 0; i < adjacencyList.size(); i++) {
+    nodes[keysToNames[i]]->visited = false;
+    nodes[keysToNames[i]]->weight = -1;
+  }
 }
 
 // Determine the minimum spanning tree of a directed graph using Kruskal's algorithm.
