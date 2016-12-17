@@ -1,7 +1,7 @@
 CC=g++
 
-all: WDGraph.o DisjointSets.o
-	${CC} WDGraph.o DisjointSets.o -o asg4
+all: DisjointSets.o WDGraph.o
+	${CC} DisjointSets.o WDGraph.o -o asg4
 
 DisjointSets.o: DisjointSets.cpp DisjointSets.h
 	${CC} -c DisjointSets.cpp

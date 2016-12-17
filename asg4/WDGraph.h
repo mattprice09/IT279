@@ -60,6 +60,8 @@ class WDGraph {
 
   void addEdge(string source, string sink, int weight);
 
+  int edgeWeight(int source, int sink);
+
   void topologicalSort();
 
   void shortestPath(string sourceNode);
@@ -67,6 +69,8 @@ class WDGraph {
   void minSpanTree();
 
   void printGraph();
+
+  map<int, string> getKeysToNames();
 
  private:
 

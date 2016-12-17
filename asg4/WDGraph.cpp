@@ -1,6 +1,7 @@
 
 #include "WDGraph.h"
 
+
 WDGraph::node::node(string n, int k) {
   name = n;
   key = k;
@@ -51,8 +52,7 @@ void WDGraph::addEdge(string source, string sink, int w) {
   weight = weight + w;
 }
 
-void WDGraph::printGraph() {
-
+map<int, string> WDGraph::getKeysToNames() {
   typedef map<string, node*>::iterator it_type;
 
   // Get map containing keys mapped to names
@@ -61,10 +61,18 @@ void WDGraph::printGraph() {
     keysToNames[iterator->second->key] = iterator->first;
   }
 
+  return keysToNames;
+}
+
+void WDGraph::printGraph() {
+
+  map<int, string> keysToNames = getKeysToNames();
+
   cout << endl << "Total combined graph weight: " << weight << endl;
 
   // Print all node information
   cout << endl << "NODES" << endl;
+  typedef map<string, node*>::iterator it_type;
   for (it_type iterator = nodes.begin(); iterator != nodes.end(); iterator++) {
     int i = iterator->second->key;
     cout << "Name: " << iterator->first << ", key: " << i << endl;
@@ -74,14 +82,29 @@ void WDGraph::printGraph() {
       int j = adjacencyList[i][e].first;
       cout << "Source: " << i << " (" << iterator->first << ")";
       cout << ", Sink: " << j << " (" << keysToNames[j] << ")";
-      cout << ", Weight: " << adjacencyList[i][e].second << endl;;
+      cout << ", Weight: " << adjacencyList[i][e].second << endl;
     }
   }
 }
 
+int WDGraph::edgeWeight(int source, int sink) {
+  if (source >= adjacencyList.size()) {
+    return -1;
+  }
+  for (int i = 0; i < adjacencyList[source].size(); i++) {
+    if (adjacencyList[source][i].first == sink) {
+      return adjacencyList[source][i].second;
+    }
+  }
+  return -1;
+}
+
+// Determine the minimum spanning tree of a directed graph using Kruskal's algorithm.
+// REQUIRES: The tree must be connected.
 void WDGraph::minSpanTree() {
+
   // Initialize disjoint sets
-  // DisjointSets ds(adjacencyList.size());
+  DisjointSets ds(adjacencyList.size());
   
   // Create priority queue containing edges
   priority_queue<edge*, vector<edge*>, edge> pq;
@@ -93,25 +116,41 @@ void WDGraph::minSpanTree() {
     }
   }
 
-  // Print out priority queue
-  while (!pq.empty()) {
-    cout << pq.top()->weight << endl;
+  // Apply Kruskal's algorithm
+  int edgesDone = 0;
+  while (edgesDone < adjacencyList.size()-1) {
+    int u = pq.top()->source;
+    int v = pq.top()->sink;
+    int w = pq.top()->weight;
     pq.pop();
+    
+    int uSet = ds.find(u);
+    int vSet = ds.find(v);
+    if (uSet != vSet) {
+      edgesDone++;
+      ds.unionSets(v, u);
+    }
   }
 
+  // Print out minimuim spanning tree
+  map<int, string> keysToNames = getKeysToNames();
+  for (int i = 0; i < ds.getSets().size(); i++) {
+    if (ds.getSets()[i] != -1) {
+      string src = keysToNames[i];
+      string snk = keysToNames[ds.getSets()[i]];
+      cout << "Edge: " << src << " -> " + snk << ", weight: " << edgeWeight(i, ds.getSets()[i]) << endl;
+    }
+  }
 }
-
-// adjacencyList:
-// index 0: 
 
 int main() {
   WDGraph testGraph;
 
-  string v1 = "Bobs vertex";
-  string v2 = "Johns vertex";
-  string v3 = "johnny";
-  string v4 = "jessica";
-  string v5 = "james";
+  string v1 = "A";
+  string v2 = "B";
+  string v3 = "C";
+  string v4 = "D";
+  string v5 = "E";
   testGraph.addVertex(v1);
   testGraph.addVertex(v2);
   testGraph.addVertex(v3);
@@ -123,6 +162,6 @@ int main() {
   testGraph.addEdge(v3, v4, 10);
   testGraph.addEdge(v4, v2, 6);
   testGraph.addEdge(v5, v3, 9);
-  testGraph.printGraph();
+  // testGraph.printGraph();
   testGraph.minSpanTree();
 }
