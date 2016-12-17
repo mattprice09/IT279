@@ -6,9 +6,13 @@
 #define WDGRAPH_H
 
 using namespace std;
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <queue>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>

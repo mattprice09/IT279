@@ -69,10 +69,6 @@ int WDGraph::getTotalWeight() {
   return tot;
 }
 
-void WDGraph::readGraph(string fname) {
-
-}
-
 void WDGraph::addVertex(string name) {
   int i = adjacencyList.size();
 
@@ -141,6 +137,131 @@ int WDGraph::edgeWeight(int source, int sink) {
 
 void WDGraph::topologicalSort() {
 
+  int vertices = adjacencyList.size();
+
+  vector< vector <int> > modList;
+
+  for (int i = 0; i < adjacencyList.size(); i++)
+  {
+    for (int j = 0; j < adjacencyList.at(i).size(); j++)
+    {
+      int& whatever = adjacencyList.at(i).at(j).first;
+
+      modList[i].push_back(whatever);
+    }
+  }
+
+  int visitCount = 0;
+
+  queue<int> mainQueue;
+  
+  //vector of size however many vertices there are, all indegrees set to 0
+  vector <int> inDegrees(vertices, 0);
+
+  vector <int> topResult;
+
+  for (int i = 0; i < vertices; i++)
+  {
+
+    for (int j = 0; j < adjacencyList.at(i).size(); j++)
+    {
+      inDegrees[adjacencyList.at(i).at(j).first]++;
+    }
+  }
+
+  for (int i = 0; i < vertices; i++)
+  {
+    if (inDegrees[i] == 0)
+    {
+      mainQueue.push(i);
+    }
+  }
+
+  while (!mainQueue.empty())
+  {
+    int temp = mainQueue.front();
+    mainQueue.pop();
+
+    topResult.push_back(temp);
+
+
+    for (int i = 0; i < adjacencyList.at(temp).size(); i++)
+    {
+      if ((inDegrees[i] - 1) == 0)
+      {
+        mainQueue.push(i);
+      }
+
+      visitCount++;
+    }
+  }
+
+  if (visitCount != vertices)
+  {
+    cout << "Error: Cycle in the graph\n";
+    return;
+  }
+
+  for (int i = 0; i < topResult.size(); i++)
+  {
+    cout << topResult[i] << " ";
+  }
+  cout << endl;
+}
+
+void WDGraph::readGraph(string fname) {
+  ifstream file;
+
+  file.open(fname.c_str());
+  string line;
+  int vertVals;
+  int vertices;
+  int edges = 0;
+  if (!file) {
+    cout << "Error: Could not find the requested file.";
+    return;
+  }
+  else {
+    //find amount of vertices there will be
+    getline(file, line);
+    cout << line << endl;
+    vertices = atoi(line.c_str());
+  }
+  //get vertices 
+  while(file && vertices > 0) {
+    vertices--;
+    getline(file,line);
+    cout << line << endl;
+    //add vertices
+    addVertex(line);
+  }
+  if (getline(file, line)) {
+    cout << line << endl;
+    edges = atoi(line.c_str());
+  }
+  
+  while(getline(file, line)) {
+    stringstream lineStream(line);
+
+    string value;
+    int c = 0;
+    string fr;
+    string to;
+    while (lineStream >> value) {
+      if (c == 0) {
+        fr = value;
+      } else if (c == 1) {
+        to = value;
+      } else if (c == 2) {
+        edges--;
+        //add edge
+        int edgeVal = atoi(value.c_str());
+        addEdge(fr, to, edgeVal);
+      }
+      c++;
+    }
+  }
+  file.close();
 }
 
 void WDGraph::shortestPath() {
@@ -180,8 +301,14 @@ void WDGraph::shortestPath() {
   while (numComplete < adjacencyList.size()) {
     node* v = pq.top();
     pq.pop();
-    if (v->visited == false) {
 
+    // Handle incomplete graphs
+    if (adjacencyList[v->key].size() == 0) {
+      cout << endl << "ERROR: Graph is not connected. Please use a valid graph." << endl;
+      return;
+    }
+
+    if (v->visited == false) {
       // Check all adjacent nodes of current node
       for (int w = 0; w < adjacencyList[v->key].size(); w++) {
         int cw = adjacencyList[v->key][w].second;

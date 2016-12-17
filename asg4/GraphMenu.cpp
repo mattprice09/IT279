@@ -1,6 +1,4 @@
 
-#include <cstdio>
-#include <cstdlib>
 #include "GraphMenu.h"
 
 // Helper for code cleanliness
@@ -42,24 +40,24 @@ void GraphMenu::createGraph() {
   cin >> fname;
 
   WDGraph graph;
-  // graph.readGraph(fname);
+  graph.readGraph(fname);
 
-  string v1 = "A";
-  string v2 = "B";
-  string v3 = "C";
-  string v4 = "D";
-  string v5 = "E";
-  graph.addVertex(v1);
-  graph.addVertex(v2);
-  graph.addVertex(v3);
-  graph.addVertex(v4);
-  graph.addVertex(v5);
-  graph.addEdge(v1, v2, 8);
-  graph.addEdge(v2, v1, 20);
-  graph.addEdge(v2, v5, 12);
-  graph.addEdge(v3, v4, 10);
-  graph.addEdge(v4, v2, 6);
-  graph.addEdge(v5, v3, 9);
+  // string v1 = "A";
+  // string v2 = "B";
+  // string v3 = "C";
+  // string v4 = "D";
+  // string v5 = "E";
+  // graph.addVertex(v1);
+  // graph.addVertex(v2);
+  // graph.addVertex(v3);
+  // graph.addVertex(v4);
+  // graph.addVertex(v5);
+  // graph.addEdge(v1, v2, 8);
+  // graph.addEdge(v2, v1, 20);
+  // graph.addEdge(v2, v5, 12);
+  // graph.addEdge(v3, v4, 10);
+  // graph.addEdge(v4, v2, 6);
+  // graph.addEdge(v5, v3, 9);
 
   graphs.push_back(graph);
 
