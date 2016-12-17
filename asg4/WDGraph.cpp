@@ -7,6 +7,22 @@ WDGraph::node::node(string n, int k) {
   visited = false;
 }
 
+WDGraph::edge::edge() {
+  source = -1;
+  sink = -1;
+  weight = -1;
+}
+
+WDGraph::edge::edge(int src, int snk, int w) {
+  source = src;
+  sink = snk;
+  weight = w;
+}
+
+bool WDGraph::edge::operator ()(const edge* lhs, const edge* rhs) {
+  return lhs->weight > rhs->weight;
+}
+
 WDGraph::WDGraph() {
   weight = 0;
 }
@@ -54,23 +70,59 @@ void WDGraph::printGraph() {
     cout << "Name: " << iterator->first << ", key: " << i << endl;
 
     // Print node's edge information
-    for (int edge = 0; edge < adjacencyList[i].size(); edge++) {
-      int j = adjacencyList[i][edge].first;
+    for (int e = 0; e < adjacencyList[i].size(); e++) {
+      int j = adjacencyList[i][e].first;
       cout << "Source: " << i << " (" << iterator->first << ")";
       cout << ", Sink: " << j << " (" << keysToNames[j] << ")";
-      cout << ", Weight: " << adjacencyList[i][edge].second << endl;;
+      cout << ", Weight: " << adjacencyList[i][e].second << endl;;
     }
   }
 }
+
+void WDGraph::minSpanTree() {
+  // Initialize disjoint sets
+  // DisjointSets ds(adjacencyList.size());
+  
+  // Create priority queue containing edges
+  priority_queue<edge*, vector<edge*>, edge> pq;
+  for (int i = 0; i < adjacencyList.size(); i++) {
+    for (int j = 0; j < adjacencyList[i].size(); j++) {
+      // Create new edge, push into priority queue
+      edge* e = new edge(i, adjacencyList[i][j].first, adjacencyList[i][j].second);
+      pq.push(e);
+    }
+  }
+
+  // Print out priority queue
+  while (!pq.empty()) {
+    cout << pq.top()->weight << endl;
+    pq.pop();
+  }
+
+}
+
+// adjacencyList:
+// index 0: 
 
 int main() {
   WDGraph testGraph;
 
   string v1 = "Bobs vertex";
   string v2 = "Johns vertex";
+  string v3 = "johnny";
+  string v4 = "jessica";
+  string v5 = "james";
   testGraph.addVertex(v1);
   testGraph.addVertex(v2);
+  testGraph.addVertex(v3);
+  testGraph.addVertex(v4);
+  testGraph.addVertex(v5);
   testGraph.addEdge(v1, v2, 8);
   testGraph.addEdge(v2, v1, 20);
+  testGraph.addEdge(v2, v5, 12);
+  testGraph.addEdge(v3, v4, 10);
+  testGraph.addEdge(v4, v2, 6);
+  testGraph.addEdge(v5, v3, 9);
   testGraph.printGraph();
+  testGraph.minSpanTree();
 }
