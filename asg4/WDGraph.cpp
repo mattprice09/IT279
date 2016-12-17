@@ -148,6 +148,8 @@ void WDGraph::topologicalSort() {
       int& whatever = adjacencyList.at(i).at(j).first;
 
       modList[i].push_back(whatever);
+      
+      whatever = NULL:
     }
   }
 
@@ -163,9 +165,9 @@ void WDGraph::topologicalSort() {
   for (int i = 0; i < vertices; i++)
   {
 
-    for (int j = 0; j < adjacencyList.at(i).size(); j++)
+    for (int j = 0; j < modList.at(i).size(); j++)
     {
-      inDegrees[adjacencyList.at(i).at(j).first]++;
+      inDegrees[modList.at(i).at(j).first]++;
     }
   }
 
@@ -185,7 +187,7 @@ void WDGraph::topologicalSort() {
     topResult.push_back(temp);
 
 
-    for (int i = 0; i < adjacencyList.at(temp).size(); i++)
+    for (int i = 0; i < modList.at(temp).size(); i++)
     {
       if ((inDegrees[i] - 1) == 0)
       {
