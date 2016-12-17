@@ -68,7 +68,7 @@ class WDGraph {
   int getSize();
   int getTotalWeight();
 
-  void readGraph(string fname);
+  int readGraph(string fname);
 
   void addVertex(string name);
 

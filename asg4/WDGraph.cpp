@@ -209,7 +209,8 @@ void WDGraph::topologicalSort() {
   cout << endl;
 }
 
-void WDGraph::readGraph(string fname) {
+// Read a graph from a given file
+int WDGraph::readGraph(string fname) {
   ifstream file;
 
   file.open(fname.c_str());
@@ -219,7 +220,7 @@ void WDGraph::readGraph(string fname) {
   int edges = 0;
   if (!file) {
     cout << "Error: Could not find the requested file.";
-    return;
+    return 1;
   }
   else {
     //find amount of vertices there will be
@@ -262,8 +263,10 @@ void WDGraph::readGraph(string fname) {
     }
   }
   file.close();
+  return 0;
 }
 
+// Calculate the shortest path from one node to all other nodes
 void WDGraph::shortestPath() {
   string sourceNode;
 
@@ -398,4 +401,3 @@ void WDGraph::minSpanTree() {
     }
   }
 }
-
