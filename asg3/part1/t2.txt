@@ -1,0 +1,2 @@
+this file contains maaaaaannny misspelled words
+it should definitely fail our spellcheck
